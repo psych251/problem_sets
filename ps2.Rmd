@@ -32,7 +32,7 @@ To make this data tidy, we'll do some cleanup. First, remove the columns you don
 HINT: `?select` and the examples of helper functions will help you be efficient.
 
 ```{r select}
-d.tidy <- select(...)
+d.tidy <- select(d, WorkerId, Input.condition, starts_with("Answer"))
 ```
 
 Try renaming some variables using `rename`. A good naming scheme is:
@@ -44,7 +44,12 @@ Try renaming some variables using `rename`. A good naming scheme is:
 Try using the `%>%` operator as well. So you will be "piping" `d %>% rename(...)`.
 
 ```{r rename}
-d.tidy <- ...
+d.tidy <- d.tidy %>%
+  rename(workerid = WorkerId,
+         condition = Input.condition,
+         dog = Answer.dog_cost,
+         plasma = Answer.plasma_cost,
+         sushi = Answer.sushi_cost)
 ```
 
 OK, now for the tricky part. Use the verb *gather* to turn this into a *tidy* data frame.

@@ -29,11 +29,28 @@ qplot(diamonds$carat, diamonds$price)
 Scatter plots are trivial, and easy to add features to. Modify this plot so that it uses the dataframe rather than working from variables in the general namespace (good to get away from retyping `diamonds$` every time you reference a variable). 
 
 ```{r}
+qplot(carat, price, data = diamonds)
 ```
 
 Try adding clarity and cut, using shape and color as your visual variables. 
 
 ```{r}
+qplot(x = carat, y = price,
+      shape = clarity, 
+      color = cut, 
+      data = diamonds)
+head(diamonds)
+```
+
+Exploratory analysis with price:
+
+```{r}
+#qplot(x = clarity, y = price,
+#      data = diamonds)
+ggplot(data = diamonds, 
+       aes(x = carat, y = price, color = clarity)) +
+  geom_point(alpha = .1, size = .5) + 
+  scale_y_log10() 
 ```
 
 # More complex with `ggplot`
@@ -53,6 +70,10 @@ Try writing this as a single set of additions (e.g. one line of R code, though y
 
 
 ```{r}
+ggplot(diamonds, aes(x=carat, y=price)) + 
+  geom_point() + 
+  ylab("Price") + 
+  xlab("Carat (Weight)")
 ```
 
 

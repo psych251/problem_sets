@@ -1,0 +1,153 @@
+---
+title: 'Class 6a: Blake et al. (2015) exercise'
+author: "Mike Frank"
+date: "November 16, 2017"
+output: 
+  html_document:
+    toc: true
+---
+
+# Intro
+
+This is an exploration of Blake et al. (2015), [Ontogeny of fairness in seven societies](http://www.nature.com/nature/journal/v528/n7581/full/nature15703.html).
+
+```{r}
+library(tidyverse)
+
+d <- read_csv("data/Ontogeny_fairness_seven_societies_data.csv") %>%
+  mutate(trial_num = as.numeric(gsub(".(\\d+)", "\\1", trial)),
+         trial_type = factor(eq.uneq, 
+                             levels = c("E","U"), 
+                             labels = c("Equal","Unequal")), 
+         condition = factor(condition,
+                      levels = c("AI","DI"), 
+                      labels = c("Advantageous","Disadvantageous"))) %>%
+  arrange(country, condition, actor.id, trial_num)
+```
+
+The general structue of this experiment is that we have pairs of participants assigned to the Disadvantageous and Advantageous conditions, and they do 16 trials for each pair in two blocks (varying value of the offer). 
+
+```{r}
+d
+```
+
+
+# Variable exploration
+
+Describe the dataset graphically in ways that are useful for you to get a handle on the data collection effort. 
+
+```{r}
+demo <- d %>%
+  mutate(age = floor(actor.age.years)) %>%
+  group_by(country, age, actor.id) %>%
+  summarise(n = n()) %>%
+  summarise(n = n())
+
+ggplot(demo, aes(x = age, y = n)) + 
+  geom_bar(stat = "identity") + 
+  facet_grid(. ~ country)
+```
+
+# Hypothesis-related exploration
+
+Try just plotting the un-adjusted curves. 
+
+```{r}
+ms <- d %>%
+  filter(!is.na(eq.uneq)) %>%
+  mutate(age = floor(actor.age.years), 
+         decision = decision == "reject") %>%
+  group_by(country, trial_type, condition, age, actor.id) %>%
+  summarise(decision = mean(decision, na.rm=TRUE)) %>%
+  summarise(decision = mean(decision, na.rm=TRUE),
+            n = n())
+
+ggplot(ms, aes(x = age, y = decision, col = country)) + 
+  geom_point(aes(size = n)) +
+  facet_grid(condition ~ trial_type) + 
+  geom_smooth(method="lm", se = FALSE) + 
+  ylab("Proportion offers rejected") +
+  xlab("Age (years)") +
+  ylim(c(0,1)) 
+```
+
+Now rebin into 3-year bins.
+
+```{r}
+ms <- d %>%
+  filter(!is.na(eq.uneq)) %>%
+  mutate(age = floor(actor.age.years/2)*2, 
+         decision = decision == "reject") %>%
+  group_by(country, trial_type, condition, age, actor.id) %>%
+  summarise(decision = mean(decision, na.rm=TRUE)) %>%
+  summarise(decision = mean(decision, na.rm=TRUE),
+            n = n())
+
+ggplot(ms, aes(x = age, y = decision, col = country)) + 
+  geom_point(aes(size = n)) +
+  facet_grid(condition ~ trial_type) + 
+  geom_smooth(method="lm", se = FALSE) + 
+  ylab("Proportion offers rejected") +
+  xlab("Age (years)") +
+  ylim(c(0,1)) 
+```
+
+Break this down by country. I like this plot best so far. 
+
+```{r}
+ggplot(ms, aes(x = age, y = decision, col = condition)) + 
+  geom_point(aes(size = n)) +
+  facet_grid(trial_type ~ country) + 
+  geom_smooth(method="lm", se = FALSE, span = 2) + 
+  ylab("Proportion offers rejected") +
+  xlab("Age (years)") +
+  ylim(c(0,1)) 
+```
+
+But maybe we can do better. Let's:
+
++ bootstrap CIs
++ sort the plots
++ add better smoother (quadratic)
++ use lines instead of points
++ better palette
+
+```{r}
+# bootstrapping code
+library(bootstrap)
+theta <- function(x,xdata,na.rm=T) {mean(xdata[x],na.rm=na.rm)}
+ci.low <- function(x,na.rm=T) {
+  mean(x,na.rm=na.rm) - quantile(bootstrap(1:length(x),1000,theta,x,na.rm=na.rm)$thetastar,.025,na.rm=na.rm)}
+ci.high <- function(x,na.rm=T) {
+  quantile(bootstrap(1:length(x),1000,theta,x,na.rm=na.rm)$thetastar,.975,na.rm=na.rm) - mean(x,na.rm=na.rm)}
+
+ms <- d %>%
+  filter(!is.na(eq.uneq)) %>%
+  mutate(age = floor(actor.age.years/2)*2, 
+         decision = decision == "reject") %>%
+  group_by(country, trial_type, condition, age, actor.id) %>%
+  summarise(decision = mean(decision, na.rm=TRUE)) %>%
+  summarise(mean = mean(decision, na.rm=TRUE), 
+            ci_lower = ci.low(decision),
+            ci_upper = ci.high(decision),
+            n = n())
+
+ms$country <- factor(ms$country, 
+                     levels = c("Uganda","US","Canada",
+                                "Senegal","India","Peru","Mexico"))
+
+ggplot(ms, aes(x = age, y = mean, col = condition)) + 
+  geom_linerange(aes(ymin = mean - ci_lower, 
+                     ymax = mean + ci_upper), 
+                  position = position_dodge(width = .5)) + 
+  geom_point(aes(size=n)) +
+  facet_grid(trial_type ~ country) + 
+  geom_smooth(method="lm", se = FALSE, formula = y ~ I(x^2), aes(weight = 1/n)) + 
+  ylab("Proportion offers rejected") +
+  xlab("Age (years)") +
+  ylim(c(0,1)) + 
+  ggthemes::scale_colour_solarized() + 
+  ggthemes::theme_few() +
+  theme(legend.position = "bottom")
+
+```

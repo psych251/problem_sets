@@ -14,7 +14,9 @@ This is an exploration of Blake et al. (2015), [Ontogeny of fairness in seven so
 ```{r}
 library(tidyverse)
 
-d <- read_csv("data/Ontogeny_fairness_seven_societies_data.csv") %>%
+d_raw <- read_csv("data/Ontogeny_fairness_seven_societies_data.csv") 
+
+d <- d_raw %>%
   mutate(trial_num = as.numeric(gsub(".(\\d+)", "\\1", trial)),
          trial_type = factor(eq.uneq, 
                              levels = c("E","U"), 

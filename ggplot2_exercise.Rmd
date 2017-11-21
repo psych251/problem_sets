@@ -89,7 +89,9 @@ ggplot(diamonds, aes(x=carat, y=price, col = cut, shape = clarity)) +
 One of the primary benefits of `ggplot2` is the use of facets - also known as small multiples in the Tufte vocabulary. That last plot was probably hard to read. Facets could make it better. Try adding `facet_grid(x ~ y)`.  `x ~ y` means row facets are by `x`, column facets by `y`. 
 
 ```{r}
-
+ggplot(diamonds, aes(x=carat, y=price, col = cut)) +
+  geom_point(shape = ".") +
+  facet_grid(cut ~ clarity)
 ```
 
 But facets can also get overwhelming. Try to strike a good balance between color, shape, and faceting.
@@ -97,6 +99,9 @@ But facets can also get overwhelming. Try to strike a good balance between color
 HINT: `facet_grid(. ~ x)` puts x on the columns, but `facet_wrap(~ x)` (no dot) *wraps* the facets. 
 
 ```{r}
+ggplot(diamonds, aes(x=carat, y=price, col = clarity)) +
+  geom_point(shape = ".") +
+  facet_wrap(~ cut)
 ```
 
 
@@ -107,9 +112,10 @@ As you've seen above, the basic unit of a ggplot plot is a "geom" - a mapping be
 Let's try adding some geoms and manipulating their parameters. One combo I really like is a scatterplot with a smoothing layer (`geom_smooth`). Try adding one onto this plot. 
 
 ```{r}
-ggplot(diamonds, aes(x = carat, y = price)) + 
-  geom_point() + 
-  facet_wrap(~clarity)
+ggplot(diamonds, aes(x=carat, y=price)) +
+  geom_point(shape = ".") +
+  facet_grid(cut ~ clarity) +
+  geom_smooth(method="lm", aes(col = clarity))
 ```
 
 
@@ -134,6 +140,8 @@ Here's a somewhat ugly plot - see if you can make it look awesome.
 ```{r}
 ggplot(diamonds, aes(x = carat, y = price, col = cut)) + 
   geom_point() + 
-  facet_wrap(~clarity)
+  facet_wrap(~clarity) + 
+  ggthemes::theme_few() + 
+  scale_colour_grey()
 ```
 

@@ -34,6 +34,32 @@ d
 
 # Variable exploration
 
+```{r}
+d %>%
+  group_by(country) %>%
+  summarise(n = n())
+```
+
+```{r}
+d %>%
+  group_by(country, actor.id) %>%
+  summarise(n = n()) %>%
+  summarise(n = n())
+
+d %>%
+  group_by(country) %>%
+  summarise(n = length(unique(actor.id)))
+```
+
+```{r}
+d %>%
+  group_by(country, actor.age.years, actor.id) %>%
+  summarise(n = n()) %>%
+  summarise(n = n())
+
+```
+
+
 Describe the dataset graphically in ways that are useful for you to get a handle on the data collection effort. 
 
 ```{r}
@@ -43,9 +69,10 @@ demo <- d %>%
   summarise(n = n()) %>%
   summarise(n = n())
 
-ggplot(demo, aes(x = age, y = n)) + 
+ggplot(demo, 
+       aes(x = age, y = n)) + 
   geom_bar(stat = "identity") + 
-  facet_grid(. ~ country)
+  facet_wrap(~ country)
 ```
 
 # Hypothesis-related exploration
@@ -62,13 +89,29 @@ ms <- d %>%
   summarise(decision = mean(decision, na.rm=TRUE),
             n = n())
 
-ggplot(ms, aes(x = age, y = decision, col = country)) + 
+ggplot(ms, 
+       aes(x = age, y = decision, col = country)) + 
   geom_point(aes(size = n)) +
   facet_grid(condition ~ trial_type) + 
   geom_smooth(method="lm", se = FALSE) + 
   ylab("Proportion offers rejected") +
   xlab("Age (years)") +
-  ylim(c(0,1)) 
+  ylim(c(0,1)) + 
+  ggthemes::theme_few() + 
+  ggthemes::scale_color_solarized()
+```
+
+```{r}
+ggplot(filter(ms, country == "US"), 
+       aes(x = age, y = decision, col = country)) + 
+  geom_point(aes(size = n)) +
+  facet_grid(condition ~ trial_type) + 
+  geom_smooth(method="lm", se = FALSE) + 
+  ylab("Proportion offers rejected") +
+  xlab("Age (years)") +
+  ylim(c(0,1)) + 
+  ggthemes::theme_few() + 
+  ggthemes::scale_color_solarized()
 ```
 
 Now rebin into 3-year bins.

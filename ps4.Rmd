@@ -14,6 +14,7 @@ library(tidyverse)
 library(ggthemes)
 theme_set(theme_few())
 sem <- function(x) {sd(x, na.rm=TRUE) / sqrt(sum(!is.na((x))))}
+ci <- function(x) {sem(x) * 1.96} # reasonable approximation 
 ```
 
 This is problem set #4, in which we hope you will practice the visualization package `ggplot2`, as well as hone your knowledge of the packages `tidyr` and `dplyr`. You'll look at two different datasets here. 
@@ -66,7 +67,7 @@ d_a <- read_csv("data/sklar_expt6a_corrected.csv")
 d_b <- read_csv("data/sklar_expt6b_corrected.csv")
 ```
 
-`gather` these datasets into long ("tidy data") form and get rid of the Xs in the headers. If you need to review tidying, [here's the link to R4DS](http://r4ds.had.co.nz/tidy-data.html) (bookmark it!). Remember that you can use `select_helpers` to help in your `gather`ing. 
+`gather` these datasets into long ("tidy data") form. If you need to review tidying, [here's the link to R4DS](http://r4ds.had.co.nz/tidy-data.html) (bookmark it!). Remember that you can use `select_helpers` to help in your `gather`ing. 
 
 Once you've tidied, bind all the data together. Check out `bind_rows`.
 
@@ -116,6 +117,8 @@ Sklar et al. did two manipulation checks. Subjective - asking participants wheth
 
 > ANSWER HERE
 
+> In Experiments 6, 7, and 9, we used the binomial distribution to determine whether each participant performed better than chance on the objective block and excluded from analyses all those participants who did (21, 30, and 7 participants in Experiments 6, 7, and 9, respectively). Note that, although the number of excluded participants may seem high, they fall within the normal range of long-duration CFS priming, in which suc- cessful suppression is strongly affected by individual differences (38). We additionally excluded participants who reported any subjective awareness of the primes (four, five, and three participants in Experiments 6, 7, and 9, respectively).
+ 
 OK, let's turn back to the measure and implement Sklar et al.'s exclusion criterion. You need to have said you couldn't see (subjective test) and also be not significantly above chance on the objective test (< .6 correct). Call your new data frame `ds`.
 
 ```{r}
@@ -125,9 +128,11 @@ OK, let's turn back to the measure and implement Sklar et al.'s exclusion criter
 
 Sklar et al. show a plot of a "facilitation effect" - the amount faster you are for prime-congruent naming compared with prime-incongruent naming. They then show plot this difference score for the subtraction condition and for the two prime times they tested. Try to reproduce this analysis. 
 
-HINT: first take averages within subjects, then compute your error bars across participants, using the `sem` function (defined above). 
+HINT: first take averages within subjects, then compute your error bars across participants, using the `ci` function (defined above). Sklar et al. use SEM (and do it incorectly, actually), but CI is more useful for "inference by eye" as discussed in class.  
 
 HINT 2: remember that in class, we reviewed the common need to `group_by` and `summarise` *twice*, the first time to get means for *each subject*, the second time to compute statistics *across subjects*.
+
+HINT 3: The final summary dataset should have 4 rows and 5 columns (2 columns for the two conditions and 3 columns for the outcome: reaction time, ci, and n).
 
 ```{r}
 ```
@@ -137,19 +142,7 @@ Now plot this summary, giving more or less the bar plot that Sklar et al. gave (
 ```{r}
 ```
 
-What do you see here? How close is it to what Sklar et al. report? Do the error bars match? How do you interpret these data? 
+What do you see here? How close is it to what Sklar et al. report? How do you interpret these data? 
 
-Challenge problem: verify Sklar et al.'s claim about the relationship between RT and the objective manipulation check.
-
-```{r}
-```
-
-## **Optional**: Your own analysis
-
-If you are interested, dig in further. 
-
-Show us what you would do with these data, operating from first principles. What's the fairest plot showing a test of Sklar et al.'s original hypothesis?
-
-```{r}
-```
+> ANSWER
 

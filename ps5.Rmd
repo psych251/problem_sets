@@ -1,7 +1,7 @@
 ---
-title: 'PS#4: Exploratory Data Analysis'
+title: 'Psych 251 PS5: Visualization'
 author: "Mike Frank"
-date: "February 9, 2016"
+date: "2018"
 output: 
   html_document:
     toc: true
@@ -21,7 +21,7 @@ This is problem set #4, in which we hope you will practice the visualization pac
 
 First, data on children's looking at social targets from  Frank, Vul, Saxe (2011, Infancy).
 
-Second, data from Sklar et al. (2012) on the unconscious processing of arithmetic stimuli. 
+Second, data from Sklar et al. (2012) on the unconscious processing of arithmetic stimuli.
 
 In both of these cases, the goal is to poke around the data and make some plots to reveal the structure of the dataset.  
 

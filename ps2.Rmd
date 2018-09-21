@@ -1,7 +1,7 @@
 ---
-title: 'Psych 251 Problem Set #2'
+title: 'Psych 251 PS2: Data Wangling'
 author: "Mike Frank"
-date: "October 9, 2017"
+date: "2018"
 output: html_document
 ---
 

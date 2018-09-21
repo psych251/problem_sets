@@ -1,148 +1,61 @@
 ---
-title: 'PS#4: Exploratory Data Analysis'
+title: 'Psych 251 PS4: Simulation'
 author: "Mike Frank"
-date: "February 9, 2016"
+date: "2018"
 output: 
   html_document:
     toc: true
 ---
 
-# Intro
+This is problem set #3, in which we want you to integrate your knowledge of data wrangling with some basic simulation skills and some linear modeling.
+
+For ease of reading, please separate your answers from our text by marking our text with the `>` character (indicating quotes). 
 
 ```{r}
 library(tidyverse)
-library(ggthemes)
-theme_set(theme_few())
-sem <- function(x) {sd(x, na.rm=TRUE) / sqrt(sum(!is.na((x))))}
-ci <- function(x) {sem(x) * 1.96} # reasonable approximation 
 ```
 
-This is problem set #4, in which we hope you will practice the visualization package `ggplot2`, as well as hone your knowledge of the packages `tidyr` and `dplyr`. You'll look at two different datasets here. 
+Let's start by convincing ourselves that t-tests have the appropriate false positive rate. Run 10,000 t-tests with standard, normally-distributed data from a made up 30-person, single-measurement experiment (the command for sampling from a normal distribution is `rnorm`). What's the mean number of "significant" results?
 
-First, data on children's looking at social targets from  Frank, Vul, Saxe (2011, Infancy).
-
-Second, data from Sklar et al. (2012) on the unconscious processing of arithmetic stimuli. 
-
-In both of these cases, the goal is to poke around the data and make some plots to reveal the structure of the dataset.  
-
-# Part 1
-
-This part is a warmup, it should be relatively straightforward `ggplot2` practice.
-
-Load data from Frank, Vul, Saxe (2011, Infancy), a study in which we measured infants' looking to hands in moving scenes. There were infants from 3 months all the way to about two years, and there were two movie conditions (`Faces_Medium`, in which kids played on a white background, and `Faces_Plus`, in which the backgrounds were more complex and the people in the videos were both kids and adults). An eye-tracker measured children's attention to faces. This version of the dataset only gives two conditions and only shows the amount of looking at hands (other variables were measured as well). 
-
-```{r}
-fvs <- read_csv("data/FVS2011-hands.csv")
-```
-
-First, use `ggplot` to plot a histogram of the ages of children in the study. NOTE: this is a repeated measures design, so you can't just take a histogram of every measurement. 
+First do this using a `for` loop.
 
 ```{r}
 ```
 
-Second, make a scatter plot showing the difference in hand looking by age and condition. Add appropriate smoothing lines. Take the time to fix the axis labels and make the plot look nice. 
+Next, do this using the `replicate` function:
 
 ```{r}
 ```
 
-What do you conclude from this pattern of data?
+Ok, that was a bit boring. Let's try something more interesting - let's implement a p-value sniffing simulation, in the style of Simons, Nelson, & Simonsohn (2011).
 
-> ANSWER HERE
+Consider this scenario: you have done an experiment, again with 30 participants (one observation each, just for simplicity). The question is whether their performance is above chance. You aren't going to check the p-value every trial, but let's say you run 30 - then if the p-value is within the range p < .25 and p > .05, you optionally run 30 more and add those data, then test again. But if the original p value is < .05, you call it a day, and if the original is > .25, you also stop.  
 
-What statistical analyses would you perform here to quantify these differences?
-
-> ANSWER HERE
-
-# Part 2
-
-Sklar et al. (2012) claim evidence for unconscious arithmetic processing - they prime participants with arithmetic problems and claim that the authors are faster to repeat the answers. We're going to do a reanalysis of their Experiment 6, which is the primary piece of evidence for that claim. The dataare generously shared by Asael Sklar. (You may recall these data from the `tidyverse` tutorial earlier in the quarter). 
-
-## Data Prep
-
-First read in two data files and subject info. A and B refer to different trial order counterbalances. 
+First, write a function that implements this sampling regime.
 
 ```{r}
-subinfo <- read_csv("data/sklar_expt6_subinfo_corrected.csv")
-d_a <- read_csv("data/sklar_expt6a_corrected.csv")
-d_b <- read_csv("data/sklar_expt6b_corrected.csv")
+double.sample <- function () {
+}
 ```
 
-`gather` these datasets into long ("tidy data") form. If you need to review tidying, [here's the link to R4DS](http://r4ds.had.co.nz/tidy-data.html) (bookmark it!). Remember that you can use `select_helpers` to help in your `gather`ing. 
-
-Once you've tidied, bind all the data together. Check out `bind_rows`.
-
-The resulting tidy dataset should look like this:
-
-```
-    prime prime.result target congruent operand distance counterbalance subid    rt
-    <chr>        <int>  <int>     <chr>   <chr>    <int>          <int> <dbl> <int>
- 1 =1+2+5            8      9        no       A       -1              1     1   597
- 2 =1+3+5            9     11        no       A       -2              1     1   699
- 3 =1+4+3            8     12        no       A       -4              1     1   700
- 4 =1+6+3           10     12        no       A       -2              1     1   628
- 5 =1+9+2           12     11        no       A        1              1     1   768
- 6 =1+9+3           13     12        no       A        1              1     1   595
-```
+Now call this function 10k times and find out what happens. 
 
 ```{r}
 ```
 
-Merge these with subject info. You will need to look into merge and its relatives, `left_` and `right_join`. Call this dataframe `d`, by convention. 
-
-```{r}
-```
-
-Clean up the factor structure (just to make life easier). No need to, but if you want, you can make this more `tidyverse`-ish.
-
-```{r}
-d$presentation.time <- factor(d$presentation.time)
-levels(d$operand) <- c("addition","subtraction")
-```
-
-## Data Analysis Preliminaries
-
-Examine the basic properties of the dataset. First, show a histogram of reaction times.
-
-```{r}
-```
-
-Challenge question: what is the sample rate of the input device they are using to gather RTs?
-
-> ANSWER HERE (OPTIONAL)
-
-Sklar et al. did two manipulation checks. Subjective - asking participants whether they saw the primes - and objective - asking them to report the parity of the primes (even or odd) to find out if they could actually read the primes when they tried. Examine both the unconscious and conscious manipulation checks. What do you see? Are they related to one another?
-
-```{r}
-```
-
-> ANSWER HERE
-
-> In Experiments 6, 7, and 9, we used the binomial distribution to determine whether each participant performed better than chance on the objective block and excluded from analyses all those participants who did (21, 30, and 7 participants in Experiments 6, 7, and 9, respectively). Note that, although the number of excluded participants may seem high, they fall within the normal range of long-duration CFS priming, in which suc- cessful suppression is strongly affected by individual differences (38). We additionally excluded participants who reported any subjective awareness of the primes (four, five, and three participants in Experiments 6, 7, and 9, respectively).
- 
-OK, let's turn back to the measure and implement Sklar et al.'s exclusion criterion. You need to have said you couldn't see (subjective test) and also be not significantly above chance on the objective test (< .6 correct). Call your new data frame `ds`.
-
-```{r}
-```
-
-## Replicating Sklar et al.'s analysis
-
-Sklar et al. show a plot of a "facilitation effect" - the amount faster you are for prime-congruent naming compared with prime-incongruent naming. They then show plot this difference score for the subtraction condition and for the two prime times they tested. Try to reproduce this analysis. 
-
-HINT: first take averages within subjects, then compute your error bars across participants, using the `ci` function (defined above). Sklar et al. use SEM (and do it incorectly, actually), but CI is more useful for "inference by eye" as discussed in class.  
-
-HINT 2: remember that in class, we reviewed the common need to `group_by` and `summarise` *twice*, the first time to get means for *each subject*, the second time to compute statistics *across subjects*.
-
-HINT 3: The final summary dataset should have 4 rows and 5 columns (2 columns for the two conditions and 3 columns for the outcome: reaction time, ci, and n).
-
-```{r}
-```
-
-Now plot this summary, giving more or less the bar plot that Sklar et al. gave (though I would keep operation as a variable here. Make sure you get some error bars on there (e.g. `geom_errorbar` or `geom_linerange`). 
-
-```{r}
-```
-
-What do you see here? How close is it to what Sklar et al. report? How do you interpret these data? 
+Is there an inflation of false positives? How bad is it?
 
 > ANSWER
 
+Now modify this code so that you can investigate this "double the sample" rule in a bit more depth. Let's see what happens when you double the sample ANY time p > .05 (not just when p < .25), or when you do it only if p < .5 or < .75. How do these choices affect the false positive rate?
+
+HINT: Try to do this by making the function `double.sample` take the upper p value as an argument, so that you can pass this through dplyr.
+
+HINT 2: You may need more samples. Find out by looking at how the results change from run to run.
+
+```{r}
+```
+
+What do you conclude on the basis of this simulation? How bad is this kind of data-dependent policy?
+
+> ANSWER

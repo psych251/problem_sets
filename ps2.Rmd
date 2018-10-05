@@ -1,5 +1,5 @@
 ---
-title: "251_assignment_2"
+title: "Psych 251 PS2: Tidying Data"
 author: "Andrew Lampinen"
 date: "September 27, 2018"
 output:

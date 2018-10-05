@@ -36,7 +36,7 @@ d = read.spss("data/Tamiretal2008ReplicationData.sav", to.data.frame=T)
 Take a look at the data structure:
 
 ```{r}
-str(d)
+head(d)
 ```
 
 This data is what we call **wide form** -- each subject is a single row, and the columns represent different observations. This is a somewhat inconvenient way of representing the data, for example if we wanted to do the same operation to each likert rating (for example normalize it to be in the range 0-1), we'd have to do it on each of the 40 or so rating columns. To avoid this, our eventual goal will be to convert the data into **long form**, where each row is a single observation. 
@@ -47,12 +47,15 @@ For now, take a look at the column names to get a better idea of what all is in 
 colnames(d)
 ```
 
-And see if you can figure out what range the likert scores are in. (Hint, you may want to use `unique` or `range` or `hist`, and `d$Game1Angry1` is one of the likert rating columns.) 
+And see if you can figure out what range the likert scores are in. What's the highest number on the likert scale, and what's the lowest? (Hint, `d$Game1Angry1` is one of the likert rating columns, and you may want to use `unique` or `range` or `hist`)
 
 ```{r}
 ## your code here
+
 ```
 
+Highest number: [Your answer here]
+Lowest number: [Your answer here]
 
 # cleaning up a bit
 

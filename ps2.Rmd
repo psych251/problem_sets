@@ -30,7 +30,7 @@ library(ggplot2)
 # Load Data
 
 ```{r}
-d = read.spss("Tamiretal2008ReplicationData.sav", to.data.frame=T)
+d = read.spss("data/Tamiretal2008ReplicationData.sav", to.data.frame=T)
 ```
 
 Take a look at the data structure:

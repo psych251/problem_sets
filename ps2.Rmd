@@ -69,14 +69,22 @@ First, we need to `filter` out any rows that should be excluded. According to th
 >> participant 2 is female, and this is a males only study 
 >> participant 23 was set up on part 2 of the study (the music ratings) twice and never did part 1"
 
-Fill in the filter function to do this! (hint: this is a little trickier than it might be because of how R treats NA values. You may want to check out `?is.na`.)
+You can see participant 23's data and the fact that they did not do part 1 by looking at the last rows of the dataframe:
+
+```{r}
+tail(d)
+```
+
+Notice that participant 23 has missing values for part 1.
+
+The researchers have made a column called `DoNotUse` based on their exlusion criteria. Use this column to filter the dataframe! (hint: this is a little trickier than it might be because of how R treats NA values. You may want to check out `?is.na`.)
 
 ```{r}
 filtered_d = d %>% 
   filter(   ) # your code here: exclude subjects that are marked as "DoNotUse"
 ```
 
-It's good practice to assign a new variable name to a data frame when you change it in an important way, or apply a code chunk that shouldn't be run twice. This helps prevent you seeing different results when you run your code in chunks (and might run one multiple times, or skip it, etc.) vs. knit the document.
+It's good practice to assign a new variable name (in this case `filtered_d`) to a data frame when you change it in an important way, or apply a code chunk that shouldn't be run twice. This helps prevent you seeing different results when you run your code in chunks (and might run one multiple times, or skip it, etc.) vs. knit the document.
 
 ## get rid of unnecessary columns
 

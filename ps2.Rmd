@@ -123,7 +123,7 @@ performance_hyp_d = filtered_d %>%
 
 # Converting to long form
 
-Now we want to convert the data to long form, to make the rest of our manipulations easier. To do this, we can `gather` columns. This will take many columns, and change them into entries in a "key" column, while the values that were in the original column will be turned into entries in a "value" column. It's easiest to see with an example:
+Now we want to convert the data to long form, to make the rest of our manipulations easier. To do this, we can `gather` columns. This will take many columns, and change the column names into entries in a "key" column, while the values that were in the original column will be turned into entries in a "value" column. It's easiest to see with an example:
 
 ```{r}
 tiny_demo_d = head(performance_hyp_d, 2) # get just the first two subjects performance data, for a demo
@@ -149,7 +149,7 @@ performance_hyp_long_d = performance_hyp_d %>%
   gather(Measurement, Score, -c("Subject", "Cond"))
 ```
 
-And you can convert the rating dataset! (Call the "Value" column "Rating", so that the code below will work)
+And you can convert the rating dataset! (Call the "Key" column "Measurement" and call the "Value" column "Rating", so that the code below will work)
 
 ```{r}
 rating_hyp_long_d = rating_hyp_d %>%

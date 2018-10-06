@@ -158,7 +158,7 @@ rating_hyp_long_d = rating_hyp_d %>%
 
 # Splitting columns
 
-The measurement column in each dataset now contains a bunch of different types of information. Really, we would like these to be separate columns, for example one telling you which video-game it is, and one telling you whether there was music. Tidyverse contains some handy features for splitting columns, but unfortunately the column names here are not well suited to it (if the different types of information were always the same length, or were separated by a symbol like "." or "_", it would be easy). Thus we'll have to do a bit of manual testing. We can use the `mutate` function in dplyr to create new ones as functions of old ones (or alter existing columns). We'll also use the `grepl` function, which lets us test whether a regular expression (a fancy type of search pattern) is contained in a column. For most your purposes, you can probably just use grepl to search for strings, but there are some quite useful functions, like the or function we use below. 
+The measurement column in each dataset now contains a bunch of different types of information. Really, we would like these to be separate columns. For example, we could have one column telling you which video-game it is, and one telling you whether there was music. Tidyverse contains some handy features for splitting columns, but unfortunately the measurement names here are not well suited to it (if the different types of information were always the same length, or were separated by a symbol like "." or "_", it would be easy). Thus we'll have to do a bit of manual testing. We can use the `mutate` function in dplyr to create new columns as functions of old ones (or alter existing columns). We'll also use the `grepl` function, which lets us test whether a *regular expression* (a fancy type of search pattern) is contained in a column name. For most your purposes, you can probably just use grepl to search for strings, but there are some other quite useful functions in regular expressions, like the "or"" function (`|`) we use below.
 
 ```{r}
 performance_hyp_long_d = performance_hyp_long_d %>% 
@@ -168,12 +168,20 @@ performance_hyp_long_d = performance_hyp_long_d %>%
 
 ```
 
-Now you can help! For the rating dataset, we'll ask you to write a test using `grepl` or `%in%` to figure out whether its a recall or a music rating (the recall ratings contain either "Friends" or "Strangers"), and then we'll show you a couple other useful ways of manipulating columns. (You won't remember all the functions you see here now, but that's okay. You can always reference this tutorial later if there's something you need to figure out how to do.)
+Now you can help! For the rating dataset, write a test on a measurement name, using `grepl` or `%in%` to figure out whether it's a recall or a music rating. Your new `IsRecall` column should be true if the measurement name contain either "Friends" or "Strangers".
 
 ```{r}
 rating_hyp_long_d = rating_hyp_long_d %>%
   mutate(
     IsRecall = ,## Your code here
+  )
+```
+
+Here are a couple other useful ways of manipulating columns. (You won't remember all the functions you see here now, but that's okay. You can always reference this tutorial later if there's something you need to figure out how to do.)
+
+```{r}
+rating_hyp_long_d = rating_hyp_long_d %>%
+  mutate(
     GameNumber = as.numeric(substr(rating_hyp_long_d$Measurement, 5, 5)),
     ConfrontationalGame = GameNumber <= 2, # in a mutate, we can use a column we created (or changed) right away. Games 1 and 2 are confrontational, games 3 and 4 are not.
     Emotion = str_extract(Measurement, "Angry|Neutral|Excited|Exciting|Calm"),

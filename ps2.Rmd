@@ -90,7 +90,7 @@ It's good practice to assign a new variable name (in this case `filtered_d`) to 
 
 The dataset contains a bunnch of columns we don't care about:
 
-* The dataset contains three subject columns, which are identical except for a single NA which is not mentioned in the protocol, and so is likely an error. The `select` function helps with this.
+* The dataset contains three subject columns, which are identical except for a single NA which is not mentioned in the protocol, and so is likely an error.
 * Columns telling us the path to the executable run for each part of the experiment, we don't really care about that.
 * Etc.
 
@@ -104,7 +104,7 @@ filtered_d = filtered_d %>%
          starts_with("DinerDashWith"), c("SOFMusicEnemies", "SOFNoMusicEnemies")) # These columns are for hypothesis 2
 ```
 
-Or maybe we should split this into separate data frames for hypothesis 1 and hypothesis 2, since they are different types of experiments with different measurements, and therefore different analyses that will need to be performed. Now that we've cleaned up the data, this is pretty easy to do! We'll just drop the columns that are for the other hypothesis. The `select` function lets us choose which columns to remove (instead of which to keep) by putting a minus sign in front of them. First, let's create a dataset for the rating hypothesis by getting rid of the game performance columns:
+Even better, let's split this into separate data frames for hypothesis 1 and hypothesis 2, since they are different types of experiments with different measurements, and therefore different analyses that will need to be performed. Now that we've cleaned up the data, this is pretty easy to do! We'll just drop the columns that are for the other hypothesis. The `select` function lets us choose which columns to remove (instead of which to keep) by putting a minus sign in front of them. First, let's create a dataset for the rating hypothesis by getting rid of the game performance columns:
 
 ```{r}
 rating_hyp_d = filtered_d %>% 
@@ -114,7 +114,7 @@ rating_hyp_d = filtered_d %>%
          -starts_with("SOF"))
 ```
 
-Now you try! Fill in the selection criteria to get rid of the "Game" columns, which we don't need for the performance hypothesis. (It's simpler for you, because you don't need to do a `filter first, only a `select`.)
+Now you try! Fill in the selection criteria to get rid of the "Game" columns, which we don't need for the performance hypothesis. (It's simpler than the code block above, because you don't need to do a `filter` first, only a `select`.)
 
 ```{r}
 performance_hyp_d = filtered_d %>% 

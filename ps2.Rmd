@@ -211,7 +211,8 @@ This makes it clear why we can't just z-score the games together! The scores are
 ```{r}
 performance_hyp_long_d = performance_hyp_long_d %>%
   group_by(ConfrontationalGame, WithMusic) %>% # we're going to compute four sets of z-scores, one for the confrontational game without music, one for the confrontational game with, one for the nonconfrontational game without music, and one for the nonconfrontational game with
-  mutate(z_scored_performance = scale(Score)) 
+  mutate(z_scored_performance = scale(Score)) %>%
+  ungroup()
 ```
 
 ## Rating Hypothesis
@@ -220,8 +221,7 @@ The rating hypothesis analysis also requires some grouped manipulation: the expe
 
 ```{r}
 rating_summary_d = rating_hyp_long_d %>% 
- ## your code here
-
+  ## your code here
 ```
 
 Let's take a look at the result:
@@ -272,11 +272,8 @@ If you don't understand every step of that code (or any other `dplyr` code), it 
 Now we're finally to reproduce Fig. 2 from Tamir et al., we just need to get the mean differences within each game and each kind of music, and save them to a variable called `MeanImprovementScore`:
 
 ```{r}
-performance_diff_summary_d = performance_diff_d %>% ## Your code here
-  group_by(ConfrontationalGame, MusicCondition) %>%
-  summarize(MeanImprovementScore = mean(ImprovementScore, na.rm=T)) %>%
-  ungroup()
-  
+performance_diff_summary_d = performance_diff_d %>%
+  ## Your code here
 ```
 
 Let's take a look at your result (if it has `NA` values, how can you fix it?):

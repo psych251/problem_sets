@@ -7,7 +7,7 @@ output:
     toc: true
 ---
 
-This is problem set #3, in which we want you to integrate your knowledge of data wrangling with some basic simulation skills and some linear modeling.
+This is problem set #4, in which we want you to integrate your knowledge of data wrangling with some basic simulation skills. It's a short problem set to help you get your feet wet in testing statistical concepts through "making up data" rather than consulting a textbook or doing math. 
 
 For ease of reading, please separate your answers from our text by marking our text with the `>` character (indicating quotes). 
 
@@ -15,7 +15,7 @@ For ease of reading, please separate your answers from our text by marking our t
 library(tidyverse)
 ```
 
-Let's start by convincing ourselves that t-tests have the appropriate false positive rate. Run 10,000 t-tests with standard, normally-distributed data from a made up 30-person, single-measurement experiment (the command for sampling from a normal distribution is `rnorm`). What's the mean number of "significant" results?
+Let's start by convincing ourselves that t-tests have the appropriate false positive rate. Run 10,000 t-tests with standard, normally-distributed data from a made up 30-person, single-measurement experiment (the command for sampling from a normal distribution is `rnorm`). What's the proportion of "significant" results ($p < .05$) that you see?
 
 First do this using a `for` loop.
 

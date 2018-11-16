@@ -55,7 +55,13 @@ Is there an inflation of false positives? How bad is it?
 
 > ANSWER
 
-Now modify this code so that you can investigate this "double the sample" rule in a bit more depth. Let's see what happens when you double the sample ANY time p > .05 (not just when p < .25), or when you do it only if p < .5 or < .75. How do these choices affect the false positive rate?
+Now modify this code so that you can investigate this "double the sample" rule in a bit more depth. In the previous question, the researcher doubles the sample only when they think they got "close" to a significant result, i.e. when their not-significant p is less than 0.25. What if the researcher was more optimistic? See what happens in these 3 other scenarios:
+
+* The researcher doubles the sample whenever their pvalue is not significant, but it's less than 0.5.
+* The researcher doubles the sample whenever their pvalue is not significant, but it's less than 0.75.
+* The research doubles their sample whenever they get ANY pvalue that is not significant.
+
+How do these choices affect the false positive rate?
 
 HINT: Try to do this by making the function `double.sample` take the upper p value as an argument, so that you can pass this through dplyr.
 

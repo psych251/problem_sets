@@ -40,7 +40,7 @@ First, use `ggplot` to plot a histogram of the ages of children in the study. NO
 ```{r}
 ```
 
-Second, make a scatter plot showing the difference in hand looking by age and condition. Add appropriate smoothing lines. Take the time to fix the axis labels and make the plot look nice. 
+Second, make a scatter plot showing hand looking as a function of age and condition. Add appropriate smoothing lines. Take the time to fix the axis labels and make the plot look nice.
 
 ```{r}
 ```
@@ -67,9 +67,9 @@ d_a <- read_csv("data/sklar_expt6a_corrected.csv")
 d_b <- read_csv("data/sklar_expt6b_corrected.csv")
 ```
 
-`gather` these datasets into long ("tidy data") form. If you need to review tidying, [here's the link to R4DS](http://r4ds.had.co.nz/tidy-data.html) (bookmark it!). Remember that you can use `select_helpers` to help in your `gather`ing. 
+`gather` the `d_a` and `d_b` datasets into long ("tidy data") form. If you need to review tidying, [here's the link to R4DS](http://r4ds.had.co.nz/tidy-data.html) (bookmark it!). Remember that you can use `select_helpers` to help in your `gather`ing.
 
-Once you've tidied, bind all the data together. Check out `bind_rows`.
+Once you've tidied, bind all the data together into one dataset. Check out `bind_rows`.
 
 The resulting tidy dataset should look like this:
 
@@ -117,7 +117,7 @@ Sklar et al. did two manipulation checks. Subjective - asking participants wheth
 
 > ANSWER HERE
 
-> In Experiments 6, 7, and 9, we used the binomial distribution to determine whether each participant performed better than chance on the objective block and excluded from analyses all those participants who did (21, 30, and 7 participants in Experiments 6, 7, and 9, respectively). Note that, although the number of excluded participants may seem high, they fall within the normal range of long-duration CFS priming, in which suc- cessful suppression is strongly affected by individual differences (38). We additionally excluded participants who reported any subjective awareness of the primes (four, five, and three participants in Experiments 6, 7, and 9, respectively).
+In Experiments 6, 7, and 9, we used the binomial distribution to determine whether each participant performed better than chance on the objective block and excluded from analyses all those participants who did (21, 30, and 7 participants in Experiments 6, 7, and 9, respectively). Note that, although the number of excluded participants may seem high, they fall within the normal range of long-duration CFS priming, in which successful suppression is strongly affected by individual differences (38). We additionally excluded participants who reported any subjective awareness of the primes (four, five, and three participants in Experiments 6, 7, and 9, respectively).
  
 OK, let's turn back to the measure and implement Sklar et al.'s exclusion criterion. You need to have said you couldn't see (subjective test) and also be not significantly above chance on the objective test (< .6 correct). Call your new data frame `ds`.
 
@@ -125,6 +125,8 @@ OK, let's turn back to the measure and implement Sklar et al.'s exclusion criter
 ```
 
 ## Replicating Sklar et al.'s analysis
+
+![sklar_et_al_2012_facilitation_effect](img/sklar_et_al_2012_facilitation_effect.jpg)
 
 Sklar et al. show a plot of a "facilitation effect" - the amount faster you are for prime-congruent naming compared with prime-incongruent naming. They then show plot this difference score for the subtraction condition and for the two prime times they tested. Try to reproduce this analysis. 
 

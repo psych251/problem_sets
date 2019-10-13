@@ -2734,18 +2734,7 @@ summary(model)</code></pre>
     summarize(MeanImprovementScore = mean(ImprovementScore, na.rm=T),
               semImprovementScore = (sd(ImprovementScore, na.rm=TRUE) / 
                sqrt(length(ImprovementScore[!is.na(ImprovementScore)])))
-              ) 
-
-
-#    summarize(semImprovementScore = (sd(ImprovementScore, na.rm=TRUE) / 
- #              sqrt(length(ImprovementScore[!is.na(ImprovementScore)])))
-              
-               
-               
- # sd(Data$ Fish, na.rm=TRUE) /  
-  # sqrt(length(Data$Fish[!is.na(Data$ Fish)]))
-    
-  ## Your code here</code></pre>
+              )</code></pre>
 <p>Let’s take a look at your result (if it has <code>NA</code> values, how can you fix it?):</p>
 <pre class="r"><code>performance_diff_summary_d</code></pre>
 <pre><code>## # A tibble: 6 x 4

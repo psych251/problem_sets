@@ -283,18 +283,7 @@ performance_diff_summary_d = performance_diff_d %>%
     summarize(MeanImprovementScore = mean(ImprovementScore, na.rm=T),
               semImprovementScore = (sd(ImprovementScore, na.rm=TRUE) / 
                sqrt(length(ImprovementScore[!is.na(ImprovementScore)])))
-              ) 
-
-
-#    summarize(semImprovementScore = (sd(ImprovementScore, na.rm=TRUE) / 
- #              sqrt(length(ImprovementScore[!is.na(ImprovementScore)])))
-              
-               
-               
- # sd(Data$ Fish, na.rm=TRUE) /  
-  # sqrt(length(Data$Fish[!is.na(Data$ Fish)]))
-    
-  ## Your code here
+              )
 ```
 
 Let's take a look at your result (if it has `NA` values, how can you fix it?):

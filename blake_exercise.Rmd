@@ -1,0 +1,77 @@
+---
+title: 'Blake et al. (2015) exercise'
+author: "Mike Frank"
+date: "November 15, 2019"
+output: 
+  html_document:
+    toc: true
+---
+
+# Intro
+
+This is an in-class exercise exploring Blake et al. (2015), [Ontogeny of fairness in seven societies](http://www.nature.com/nature/journal/v528/n7581/full/nature15703.html), *Nature*.
+
+Please explore these data together (without looking at the analyses supplied by the authors). 
+
+The overall goal is to understand the degree to which the data support the authors' hypotheses, and to make some more awesome plots along the way.
+
+```{r}
+library(tidyverse)
+
+# two helper functions
+sem <- function(x) {sd(x, na.rm = TRUE) / sqrt(sum(!is.na(x)))}
+ci95 <- function(x) {sem(x) * 1.96} # lazy normal approximation
+```
+
+# Data Prep
+
+First read in the data, as distributed by the journal. 
+
+```{r}
+d <- read_csv("data/Ontogeny_fairness_seven_societies_data.csv", 
+              na = c("NA", ".")) # they use . to indicate NA
+```
+
+Do some preprocessing, taken directly from the supplemental material. 
+
+```{r}
+facVars <- c("eq.uneq", "value", "decision")
+d[, facVars] <- lapply(d[, facVars], factor)
+d$trial.number <- as.numeric(gsub(".(\\d+)", "\\1", d$trial))
+```
+
+Rename things so that they are easy to deal with. I hate hard to remember abbreviations for condition names. 
+
+```{r}
+d$trial_type <- factor(d$eq.uneq, 
+                       levels = c("E","U"), 
+                       labels = c("Equal","Unequal"))
+d$condition <- factor(d$condition,
+                      levels = c("AI","DI"), 
+                      labels = c("Advantageous","Disadvantageous"))
+```
+
+# Variable exploration
+
+Describe the dataset graphically in ways that are useful for you to get a handle on the data collection effort. 
+
+Histograms are good. Ages of the participants are useful too. 
+
+Remember your `group_by` + `summarise` workflow. This will help you here.
+
+```{r}
+```
+
+Make sure you understand what the design was: how many trials per participant, what was between- and within-subject, etc. 
+
+# Hypothesis-related exploration
+
+In this second, explore the authors' hypotheses related to advantageous and inadvantageous inequity aversion. Create 1 - 3 pictures that describe the support (or lack of it) for this hypothesis. 
+
+```{r}
+```
+
+
+```{r}
+```
+

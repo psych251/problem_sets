@@ -1,15 +1,46 @@
 ---
-title: 'Psych 251 PS4: Simulation'
+title: 'Psych 251 PS4: Simulation + Analysis'
 author: "Mike Frank"
-date: "2018"
+date: "2019"
 output: 
   html_document:
     toc: true
 ---
 
-This is problem set #4, in which we want you to integrate your knowledge of data wrangling with some basic simulation skills. It's a short problem set to help you get your feet wet in testing statistical concepts through "making up data" rather than consulting a textbook or doing math. 
+This is problem set #4, in which we want you to integrate your knowledge of data wrangling with some basic simulation skills. It's a short problem set to help consolidate your `ggplot2` skills and then help you get your feet wet in testing statistical concepts through "making up data" rather than consulting a textbook or doing math. 
 
 For ease of reading, please separate your answers from our text by marking our text with the `>` character (indicating quotes). 
+
+# Part 1: ggplot practice
+
+This part is a warmup, it should be relatively straightforward `ggplot2` practice.
+
+Load data from Frank, Vul, Saxe (2011, Infancy), a study in which we measured infants' looking to hands in moving scenes. There were infants from 3 months all the way to about two years, and there were two movie conditions (`Faces_Medium`, in which kids played on a white background, and `Faces_Plus`, in which the backgrounds were more complex and the people in the videos were both kids and adults). An eye-tracker measured children's attention to faces. This version of the dataset only gives two conditions and only shows the amount of looking at hands (other variables were measured as well). 
+
+```{r}
+fvs <- read_csv("data/FVS2011-hands.csv")
+```
+
+First, use `ggplot` to plot a histogram of the ages of children in the study. NOTE: this is a repeated measures design, so you can't just take a histogram of every measurement. 
+
+```{r}
+```
+
+Second, make a scatter plot showing hand looking as a function of age and condition. Add appropriate smoothing lines. Take the time to fix the axis labels and make the plot look nice.
+
+```{r}
+```
+
+What do you conclude from this pattern of data?
+
+> ANSWER HERE
+
+What statistical analyses would you perform here to quantify these differences?
+
+> ANSWER HERE
+
+
+# Part 2: Simulation
 
 ```{r, warning=F, message=F}
 library(tidyverse)

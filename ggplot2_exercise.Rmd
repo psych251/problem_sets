@@ -1,7 +1,7 @@
 ---
 title: 'ggplot2 intro exercise'
 author: "Mike Frank"
-date: "November 14, 2018"
+date: "November 13, 2019"
 output: html_document
 ---
   
@@ -26,15 +26,22 @@ head(diamonds)
 qplot(diamonds$carat, diamonds$price)
 ```
 
+```{r}
+qplot(diamonds$price)
+```
+
+
 Scatter plots are trivial, and easy to add features to. Modify this plot so that it uses the dataframe rather than working from variables in the general namespace (good to get away from retyping `diamonds$` every time you reference a variable). 
 
 ```{r}
-
+qplot(data = diamonds, price)
 ```
 
 Try adding clarity and cut, using shape and color as your visual variables. 
 
 ```{r}
+qplot(data = diamonds, 
+      x = carat, y = price, shape = clarity, color = cut)
 ```
 
 
@@ -46,16 +53,21 @@ sometimes easier to use and sometimes a bit more complicated. What I want to sho
 `ggplot` is the basic call, where you specify A) a dataframe and B) an aesthetic (`aes`) mapping from variables in the plot space to variables in the dataset. 
 
 ```{r}
-d <- ggplot(diamonds, aes(x=carat, y=price)) # first you set the aesthetic and dataset
-d + geom_point() # then you add geoms
-d + geom_point(aes(colour = carat)) # and you can keep doing this to add layers to the plot
+p <- ggplot(diamonds, aes(x=carat, y=price)) # first you set the aesthetic and dataset
+p <- p + geom_point() # then you add geoms
+
+p <- p + geom_point(aes(colour = carat)) # and you can keep doing this to add layers to the plot
+
+p
 ```
 
 Try writing this as a single set of additions (e.g. one line of R code, though you can put in linebreaks). This is the most common workflow for me. 
 
 
 ```{r}
-
+ggplot(diamonds, 
+       aes(x = carat, y = price)) + 
+  geom_point(aes(colour = carat))
 ```
 
 
@@ -64,13 +76,19 @@ Try writing this as a single set of additions (e.g. one line of R code, though y
 Let's try out another version of the `qplot` example above. Rewrite the last qplot example with ggplot.
 
 ```{r}
-
+ggplot(diamonds, 
+      aes(x = carat, y = price, 
+          shape = clarity, color = cut)) + 
+  geom_point() 
 ```
 
 One of the primary benefits of `ggplot2` is the use of facets - also known as small multiples in the Tufte vocabulary. That last plot was probably hard to read. Facets could make it better. Try adding `facet_grid(x ~ y)`.  `x ~ y` means row facets are by `x`, column facets by `y`. 
 
 ```{r}
-
+ggplot(diamonds, 
+      aes(x = carat, y = price)) + 
+  geom_point() + 
+  facet_grid(clarity ~ cut) 
 ```
 
 But facets can also get overwhelming. Try to strike a good balance between color, shape, and faceting.
@@ -78,7 +96,11 @@ But facets can also get overwhelming. Try to strike a good balance between color
 HINT: `facet_grid(. ~ x)` puts x on the columns, but `facet_wrap(~ x)` (no dot) *wraps* the facets. 
 
 ```{r}
-
+p <- ggplot(diamonds, 
+      aes(x = carat, y = price)) +
+  geom_point(aes( color = clarity)) + 
+  geom_smooth(method="lm") + 
+  facet_wrap(~cut) 
 ```
 
 
@@ -114,8 +136,19 @@ Finally, don't forget to "fix the axis labels"!
 Here's a somewhat ugly plot - see if you can make it look awesome. 
 
 ```{r}
-ggplot(diamonds, aes(x = carat, y = price, col = cut)) + 
+ggplot(diamonds, aes(x = carat, y = price, 
+                     col = cut)) + 
   geom_point() + 
   facet_wrap(~clarity) 
 ```
 
+```{r}
+ggplot(diamonds, aes(x = carat, y = price, 
+                     col = clarity)) + 
+  geom_point(alpha = .1) + 
+  facet_wrap(~cut)  + 
+  langcog::theme_mikabr() + 
+  theme(legend.position = "bottom") + 
+  ylab("Price ($)") + 
+  xlab("Carat")
+```

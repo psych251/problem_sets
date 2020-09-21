@@ -221,7 +221,7 @@ performance_hyp_long_d = performance_hyp_long_d %>%
 
 ## Rating Hypothesis
 
-The rating hypothesis analysis also requires some grouped manipulation: the experimenters collected repeated measures (ratings in each emotion category and each music/recall category from each game). They then averaged all the ratings that were from a given emotion and game type together to produce a nice summary. Your job is to implement this, calling the new variable MeanRating, and save the summarized data in a new data frame called `rating_summary_d`. (Hint: use a `group_by` and a `summarize`.)
+The rating hypothesis analysis also requires some grouped manipulation. The experimenters collected repeated measures on ratings in each emotion category and each music/recall category from each game. For this analysis, they averaged all the ratings over the following two variables: the given emotion and the game type, to produce a nice summary. Your job is to implement this, calling the new variable MeanRating, and save the summarized data in a new data frame called `rating_summary_d`. (Hint: use a `group_by` and a `summarize`.)
 
 ```{r}
 rating_summary_d = rating_hyp_long_d %>% 

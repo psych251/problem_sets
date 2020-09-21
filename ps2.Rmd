@@ -123,7 +123,7 @@ performance_hyp_d = filtered_d %>%
 
 # Converting to long form
 
-Now we want to convert the data to long form, to make the rest of our manipulations easier. To do this, we can `gather` columns. This will take many columns, and change the column names into entries in a "key" column, while the values that were in the original column will be turned into entries in a "value" column. It's easiest to see with an example:
+Now we want to convert the data to long form, to make the rest of our manipulations easier. To do this, we can use `pivit_longer` on the target columns. This will take many columns, and change the column names into entries in a "key" column, while the values that were in the original column will be turned into entries in a "value" column. It's easiest to see with an example:
 
 ```{r}
 tiny_demo_d = head(performance_hyp_d, 2) # get just the first two subjects performance data, for a demo
@@ -136,8 +136,9 @@ tiny_demo_d
 
 Now, take a look at the long-form version:
 ```{r}
-tiny_demo_d %>% gather(Measurment, Value, 
-                       -c("Subject", "Cond")) # this tells it to gather all columns *except* these ones.
+tiny_demo_d %>% pivot_longer(cols=-c("Subject", "Cond"), # this tells it to transform all columns *except* these ones
+                             names_to='Measurment', 
+                             values_to='Value')
 ```
 
 See how the columns have been converted into rows (except for the two we excluded), and the dataset has gone from wide to long?
@@ -145,9 +146,11 @@ See how the columns have been converted into rows (except for the two we exclude
 Now let's actually convert the performance dataset
 
 ```{r}
-performance_hyp_long_d = performance_hyp_d %>% 
-  gather(Measurement, Score, -c("Subject", "Cond"))
-  
+performance_hyp_long_d = performance_hyp_d %>%
+  pivot_longer(cols=-c("Subject", "Cond"),
+               names_to='Measurment', 
+               values_to='Score')
+
 head(performance_hyp_long_d)
 ```
 

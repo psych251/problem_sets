@@ -137,7 +137,7 @@ tiny_demo_d
 Now, take a look at the long-form version:
 ```{r}
 tiny_demo_d %>% pivot_longer(cols=-c("Subject", "Cond"), # this tells it to transform all columns *except* these ones
-                             names_to='Measurment', 
+                             names_to='Measurement', 
                              values_to='Value')
 ```
 
@@ -148,7 +148,7 @@ Now let's actually convert the performance dataset
 ```{r}
 performance_hyp_long_d = performance_hyp_d %>%
   pivot_longer(cols=-c("Subject", "Cond"),
-               names_to='Measurment', 
+               names_to='Measurement', 
                values_to='Score')
 
 head(performance_hyp_long_d)

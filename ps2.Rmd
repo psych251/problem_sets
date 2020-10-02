@@ -50,12 +50,14 @@ colnames(d)
 And see if you can figure out what range the likert scores are in. What's the highest number on the likert scale, and what's the lowest? (Hint, `d$Game1Angry1` is one of the likert rating columns, and you may want to use `unique` or `range` or `hist`)
 
 ```{r}
-## your code here
+
+d %>% summarise(across(starts_with("Game"), ))
+
 
 ```
 
-Highest number: [Your answer here]
-Lowest number: [Your answer here]
+Highest number: 7
+Lowest number: 1
 
 # cleaning up a bit
 
@@ -73,6 +75,10 @@ You can see participant 23's data and the fact that they did not do part 1 by lo
 
 ```{r}
 tail(d)
+
+# Save a new dataset to avoid overwriting old data: 
+df.d = d %>%  filter(Subject!=2, Subject!=23)
+
 ```
 
 Notice that participant 23 has missing values for part 1.
@@ -80,8 +86,12 @@ Notice that participant 23 has missing values for part 1.
 The researchers have made a column called `DoNotUse` based on their exlusion criteria. Use this column to filter the dataframe! (hint: this is a little trickier than it might be because of how R treats NA values. You may want to use `?unique` to check values in the column and check out `?is.na`.)
 
 ```{r}
+
+# Looks like there are only two values: 1 and NA. Let's keep NA and drop the 1s
+d %>% select(DoNotUse) %>% unique()
+
 filtered_d = d %>% 
-  filter(   ) # your code here: exclude subjects that are marked as "DoNotUse"
+  filter(is.na(DoNotUse)) # your code here: exclude subjects that are marked as "DoNotUse"
 ```
 
 It's good practice to assign a new variable name (in this case `filtered_d`) to a data frame when you change it in an important way, or apply a code chunk that shouldn't be run twice. This helps prevent you seeing different results when you run your code in chunks (and might run one multiple times, or skip it, etc.) vs. knit the document.
@@ -118,7 +128,7 @@ Now you try! Fill in the selection criteria to get rid of the "Game" columns, wh
 
 ```{r}
 performance_hyp_d = filtered_d %>% 
-  select( ) # your code here: remove the columns containing "Game" in the name
+  select(-starts_with("Game")) # your code here: remove the columns containing "Game" in the name
 ```
 
 # Converting to long form
@@ -158,7 +168,9 @@ And you can convert the rating dataset! (Call the "Key" column "Measurement" and
 
 ```{r}
 rating_hyp_long_d = rating_hyp_d %>%
-  ## your code here
+    pivot_longer(cols=-c("Subject", "Cond"),
+               names_to='Measurement', 
+               values_to='Score')
 
 head(rating_hyp_long_d)
 ```
@@ -180,8 +192,8 @@ Now you can help! For the rating dataset, write a test on a measurement name, us
 ```{r}
 rating_hyp_long_d = rating_hyp_long_d %>%
   mutate(
-    IsRecall = ,## Your code here
-  )
+    IsRecall = grepl("Friends|Strangers", Measurement))## Your code here
+  
 ```
 
 Here are a couple other useful ways of manipulating columns. (You won't remember all the functions you see here now, but that's okay. You can always reference this tutorial later if there's something you need to figure out how to do.)
@@ -228,6 +240,8 @@ The rating hypothesis analysis also requires some grouped manipulation. The expe
 
 ```{r}
 rating_summary_d = rating_hyp_long_d %>% 
+  group_by(Emotion, ConfrontationalGame) %>% 
+  summarize(MeanRating=mean(Score, na.rm=TRUE)) 
   ## your code here
 ```
 
@@ -262,10 +276,13 @@ To compute the difference score, we have to make our data a bit wider. We now wa
 
 ```{r}
 performance_diff_d = performance_hyp_long_d %>%
-  mutate(WithMusic = factor(WithMusic, levels=c(F, T), labels=c("PreMusic", "PostMusic"))) %>% # first, tweak the variable so our code is easier to read.
-  select(-c("Score", "Measurement")) %>% # now we remove columns we don't need (bonus: leave them in and see if you can understand what goes wrong!)
-  spread(WithMusic, z_scored_performance) %>%
+  filter(!grepl("DoNotUse", Measurement)) %>% # Remove corrupt rows
+  mutate(WithMusic = factor(WithMusic, levels=c(F, T), labels=c("PreMusic", "PostMusic")))%>% 
+  select(-c("Score", "Measurement")) %>% 
+  pivot_wider(names_from=WithMusic, 
+              values_from=z_scored_performance) %>% 
   mutate(ImprovementScore=PostMusic-PreMusic)
+
 ```
 
 Let's take a look at the end result:
@@ -280,6 +297,8 @@ Now we're finally to reproduce Fig. 2 from Tamir et al., we just need to get the
 
 ```{r}
 performance_diff_summary_d = performance_diff_d %>%
+  group_by(ConfrontationalGame, MusicCondition) %>% 
+  summarise(MeanImprovementScore=mean(ImprovementScore, na.rm=TRUE))
   ## Your code here
 ```
 

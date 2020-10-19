@@ -1,0 +1,99 @@
+---
+title: "Reproducibility Report: Group B Choice 2"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+-------
+
+For this exercise, please try to reproduce the results from Experiment 1 of the associated paper (Ko, Sadler & Galinsky, 2015). The PDF of the paper is included in the same folder as this Rmd file. 
+
+#### Methods summary: 
+
+A sense of power has often been tied to how we perceive each other's voice. Social hierarchy is embedded into the structure of society and provides a metric by which others relate to one another. In 1956, the Brunswik Lens Model was introduced to examine how vocal cues might influence hierarchy. In "The Sound of Power: Conveying and Detecting Hierarchical Rank Through Voice," Ko and colleagues investigated how manipulation of hierarchal rank within a situation might impact vocal acoustic cues. Using the Brunswik Model, six acoustic metrics were utilized (pitch mean & variability, loudness mean & variability, and resonance mean & variability) to isolate a potential contribution between individuals of different hierarchal rank. In the first experiment, Ko, Sadler & Galinsky examined the vocal acoustic cues of individuals before and after being assigned a hierarchal rank in a sample of 161 subjects (80 male). Each of the six hierarchy acoustic cues were analyzed with a 2 (high vs. low rank condition) x 2 (male vs. female) analysis of covariance, controlling for the baseline of the respective acoustic cue.
+
+------
+
+#### Target outcomes: 
+
+Below is the specific result you will attempt to reproduce (quoted directly from the results section of Experiment 1):
+
+> The impact of hierarchical rank on speakers’ acoustic cues. Each of the six hierarchy-based (i.e., postmanipulation) acoustic variables was submitted to a 2 (condition: high rank, low rank) × 2 (speaker’s sex: female, male) between-subjects analysis of covariance, controlling for the corresponding baseline acoustic variable. Table 4 presents the adjusted means by condition. Condition had a significant effect on pitch, pitch variability, and loudness variability. Speakers’ voices in the high-rank condition had higher pitch, **F(1, 156) = 4.48, p < .05**; were more variable in loudness, **F(1, 156) = 4.66, p < .05**; and were more monotone (i.e., less variable in pitch), **F(1, 156) = 4.73, p < .05**, compared with speakers’ voices in the low-rank condition (**all other Fs < 1**; see the Supplemental Material for additional analyses of covariance involving pitch and loudness). (from Ko et al., 2015, p. 6; emphasis added)
+
+The adjusted means for these analyses are reported in Table 4 (Table4_AdjustedMeans.png, included in the same folder as this Rmd file).
+
+------
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Step 1: Load packages
+
+```{r}
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+
+# #optional packages:
+# library(psych)
+# library(car) # for ANCOVA
+# library(compute.es) # for ANCOVA
+# library(lsmeans) # for ANCOVA
+```
+
+## Step 2: Load data
+
+```{r}
+# Just Experiment 1
+d <-read_csv("data/S1_voice_level_Final.csv")
+# DT::datatable(d)
+```
+
+## Step 3: Tidy data
+
+```{r}
+
+```
+
+## Step 4: Run analysis
+
+### Pre-processing
+
+```{r}
+
+```
+
+### Descriptive statistics
+
+In the paper, the adjusted means by condition are reported (see Table 4, or Table4_AdjustedMeans.png, included in the same folder as this Rmd file). Reproduce these values below:
+
+```{r}
+
+```
+
+### Inferential statistics
+
+> The impact of hierarchical rank on speakers’ acoustic cues. Each of the six hierarchy-based (i.e., postmanipulation) acoustic variables was submitted to a 2 (condition: high rank, low rank) × 2 (speaker’s sex: female, male) between-subjects analysis of covariance, controlling for the corresponding baseline acoustic variable. [...] Condition had a significant effect on pitch, pitch variability, and loudness variability. Speakers’ voices in the high-rank condition had higher pitch, **F(1, 156) = 4.48, p < .05**; were more variable in loudness, **F(1, 156) = 4.66, p < .05**; and were more monotone (i.e., less variable in pitch), **F(1, 156) = 4.73, p < .05**, compared with speakers’ voices in the low-rank condition (**all other Fs < 1**; see the Supplemental Material for additional analyses of covariance involving pitch and loudness).
+
+```{r}
+# reproduce the above results here
+
+```
+
+# Step 5: Reflection
+
+Were you able to reproduce the results you attempted to reproduce? If not, what part(s) were you unable to reproduce?
+
+> ANSWER HERE
+
+How difficult was it to reproduce your results? 
+
+> ANSWER HERE
+
+What aspects made it difficult? What aspects made it easy?
+
+> ANSWER HERE

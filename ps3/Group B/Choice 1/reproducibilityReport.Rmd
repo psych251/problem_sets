@@ -1,0 +1,141 @@
+---
+title: "Reproducibility Report: Group B Choice 1"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+-------
+
+For this exercise, please try to reproduce the results from Experiment 1 of the associated paper (Farooqui & Manly, 2015). The PDF of the paper is included in the same folder as this Rmd file. 
+
+#### Methods summary: 
+
+Participants (N=21) completed a series of trials that required them to switch or stay from one task to the other. One task was to choose the larger value of the two values if surrounded by a green box. The other task was to choose the value with the larger font if surrounded by a blue box. Subliminal cues followed by a mask were presented before each trial. Cues included "O" (non-predictive cue), "M" (switch predictive cue), and "T" (repeat predictive cue). Reaction times and performance accuracy were measured.
+
+------
+
+#### Target outcomes: 
+
+Below is the specific result you will attempt to reproduce (quoted directly from the results section of Experiment 1):
+
+> Performance on switch trials, relative to repeat trials, incurred a switch cost that was evident in longer RTs (836 vs. 689 ms) and lower accuracy rates (79% vs. 92%). If participants were able to learn the predictive value of the cue that preceded only switch trials and could instantiate relevant anticipatory control in response to it, the performance on switch trials preceded by this cue would be better than on switch trials preceded by the nonpredictive cue. This was indeed the case (mean RT-predictive cue: 819 ms; nonpredictive cue: 871 ms; mean difference = 52 ms, 95% confidence interval, or CI = [19.5, 84.4]), two-tailed paired t(20) = 3.34, p < .01. However, error rates did not differ across these two groups of switch trials (predictive cue: 78.9%; nonpredictive cue: 78.8%), p = .8.
+
+------
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Step 1: Load packages
+
+```{r}
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+
+# #optional packages:
+# library(broom)
+```
+
+## Step 2: Load data
+
+```{r warning=FALSE}
+# This reads all the participants data (each is in a seperate xls file) in and combines them into one dataframe
+# Each xls has 250 rows, the rest is their calculations using excel, which we don't want in the data
+files <- dir('data/Experiment 1')
+
+data <- data.frame()
+id <- 1
+for (file in files){
+  if(file != 'Codebook.xls'){
+    temp_data <- read_xls(file.path('data/Experiment 1', file))
+    temp_data$id <- id
+    id <- id + 1
+    temp_data <- temp_data[1:250, ]
+    data <- rbind(data, temp_data)
+  }
+}
+```
+
+## Step 3: Tidy data
+
+Each row is an observation. The data is already in tidy format.
+
+## Step 4: Run analysis
+
+### Pre-processing
+
+```{r bp-check-prime-codes, echo=FALSE, eval=FALSE}
+
+```
+
+### Descriptive statistics
+
+> Performance on switch trials, relative to repeat trials, incurred a switch cost that was evident in longer RTs (836 vs. 689 ms) 
+
+```{r}
+# reproduce the above results here
+
+```
+
+> Performance on switch trials, relative to repeat trials, incurred a switch cost that was evident in [...] lower accuracy rates (79% vs. 92%)
+
+```{r mean_Correct_Response}
+# reproduce the above results here
+
+```
+
+Now you will analyze Predictive Switch Cues vs Non-predictive Switch Cues. Let's start with reaction time.
+
+> This was indeed the case (mean RT-predictive cue: 819 ms; nonpredictive cue: 871 ms; ... )
+
+```{r mean Prime RT}
+# reproduce the above results here
+
+```
+
+Next you will try to reproduce error rates for Switch Predictive Cues vs Switch Non-predictive Cues.
+
+> However, error rates did not differ across these two groups of switch trials (predictive cue: 78.9%; nonpredictive cue: 78.8%)
+
+```{r Prime Accuracy}
+# reproduce the above results here
+
+```
+
+### Inferential statistics
+
+The first claim is that in switch trials, predictive cues lead to statistically significant faster reaction times than nonpredictive cues.
+
+> ... the performance on switch trials preceded by this cue would be better than on switch trials preceded by the nonpredictive cue. This was indeed the case (mean RT-predictive cue: 819 ms; nonpredictive cue: 871 ms; mean difference = 52 ms, 95% confidence interval, or CI = [19.5, 84.4]), two-tailed paired t(20) = 3.34, p < .01.
+
+```{r Prime RT test}
+# reproduce the above results here
+
+```
+
+Next, test the second claim.
+
+> However, error rates did not differ across these two groups of switch trials (predictive cue: 78.9%; nonpredictive cue: 78.8%), p = .8.
+
+```{r mean Prime accuracy test}
+# reproduce the above results here
+
+```
+
+# Step 5: Reflection
+
+Were you able to reproduce the results you attempted to reproduce? If not, what part(s) were you unable to reproduce?
+
+> ANSWER HERE
+
+How difficult was it to reproduce your results? 
+
+> ANSWER HERE
+
+What aspects made it difficult? What aspects made it easy?
+
+> ANSWER HERE

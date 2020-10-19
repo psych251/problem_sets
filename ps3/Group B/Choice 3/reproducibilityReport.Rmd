@@ -1,0 +1,113 @@
+---
+title: "Reproducibility Report: Group B Choice 3"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+-------
+
+For this exercise, please try to reproduce the results from Experiment 2 of the associated paper (de la Fuente, Santiago, Roman, Dumitrache, & Casasanto, 2014). The PDF of the paper is included in the same folder as this Rmd file. 
+
+#### Methods summary: 
+
+Researchers tested the question of whether temporal focus differs between Moroccan and Spanish cultures, hypothesizing that Moroccans are more past-focused, whereas Spaniards are more future-focused. Two groups of participants ($N = 40$ Moroccan and $N=40$ Spanish) completed a temporal-focus questionnaire that contained questions about past-focused ("PAST") and future-focused ("FUTURE") topics. In response to each question, participants provided a rating on a 5-point Likert scale on which lower scores indicated less agreement and higher scores indicated greater agreement. The authors then performed a mixed-design ANOVA with agreement score as the dependent variable, group (Moroccan or Spanish, between-subjects) as the fixed-effects factor, and temporal focus (past or future, within-subjects) as the random effects factor. In addition, the authors performed unpaired two-sample t-tests to determine whether there was a significant difference between the two groups in agreement scores for PAST questions, and whether there was a significant difference in scores for FUTURE questions.
+
+------
+
+#### Target outcomes: 
+
+Below is the specific result you will attempt to reproduce (quoted directly from the results section of Experiment 2):
+
+> According to a mixed analysis of variance (ANOVA) with group (Spanish vs. Moroccan) as a between-subjects factor and temporal focus (past vs. future) as a within-subjectS factor, temporal focus differed significantly between Spaniards and Moroccans, as indicated by a significant interaction of temporal focus and group, F(1, 78) = 19.12, p = .001, ηp2 = .20 (Fig. 2). Moroccans showed greater agreement with past-focused statements than Spaniards did, t(78) = 4.04, p = .001, and Spaniards showed greater agreement with future-focused statements than Moroccans did, t(78) = −3.32, p = .001. (de la Fuente et al., 2014, p. 1685).
+
+------
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+# Step 1: Load packages
+
+```{r}
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+
+# #optional packages/functions:
+# library(afex) # anova functions
+# library(ez) # anova functions 2
+# library(scales) # for plotting
+# std.err <- function(x) sd(x)/sqrt(length(x)) # standard error
+```
+
+# Step 2: Load data
+
+```{r}
+# Just Experiment 2
+data_path <- 'data/DeLaFuenteEtAl_2014_RawData.xls'
+d <- read_excel(data_path, sheet=3)
+```
+
+# Step 3: Tidy data
+
+```{r}
+
+```
+
+# Step 4: Run analysis
+
+## Pre-processing
+
+```{r}
+
+```
+
+## Descriptive statistics
+
+Try to recreate Figure 2 (fig2.png, also included in the same folder as this Rmd file):
+
+```{r}
+
+```
+
+## Inferential statistics
+
+> According to a mixed analysis of variance (ANOVA) with group (Spanish vs. Moroccan) as a between-subjects factor and temporal focus (past vs. future) as a within-subjects factor, temporal focus differed significantly between Spaniards and Moroccans, as indicated by a significant interaction of temporal focus and group, F(1, 78) = 19.12, p = .001, ηp2 = .20 (Fig. 2).
+
+```{r}
+# reproduce the above results here
+
+```
+
+> Moroccans showed greater agreement with past-focused statements than Spaniards did, t(78) = 4.04, p = .001, 
+
+```{r}
+# reproduce the above results here
+
+```
+
+> and Spaniards showed greater agreement with future-focused statements than Moroccans did, t(78) = −3.32, p = .001.(de la Fuente et al., 2014, p. 1685)
+
+```{r}
+# reproduce the above results here
+
+```
+
+# Step 5: Reflection
+
+Were you able to reproduce the results you attempted to reproduce? If not, what part(s) were you unable to reproduce?
+
+> ANSWER HERE
+
+How difficult was it to reproduce your results? 
+
+> ANSWER HERE
+
+What aspects made it difficult? What aspects made it easy?
+
+> ANSWER HERE

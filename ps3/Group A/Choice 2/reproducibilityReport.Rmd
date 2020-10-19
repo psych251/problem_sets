@@ -1,0 +1,118 @@
+---
+title: "Reproducibility Report: Group A Choice 2"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+-------
+
+For this exercise, please try to reproduce the results from Study 1 of the associated paper (Maglio & Polman, 2014). The PDF of the paper is included in the same folder as this Rmd file. 
+
+#### Methods summary: 
+
+Researchers recruited 202 volunteers at a subway station in Toronto, Ontario, Canada. Half of the sample was traveling East, while the other half was traveling West. In a 2 (orientation: toward, away from) X 4 (station: Spadina, St. George, Bloor-Yonge, Sherbourne) design, each participant was randomly asked to estimate how far one of the four stations felt to them (1= very close, 7= very far). Authors conducted a 2 X 4 ANOVA on distance estimates, and then tested differences in distance estimates between East and West-bound groups for each individual station.
+
+------
+
+#### Target outcomes: 
+
+Below is the specific result you will attempt to reproduce (quoted directly from the results section of Study 1):
+
+> We carried out a 2 (orientation: toward, away from) × 4 (station: Spadina, St. George, Bloor-Yonge, Sherbourne) analysis of variance (ANOVA) on closeness ratings, which revealed no main effect of orientation, F < 1, and a main effect of station, F(3, 194) = 24.10, p < .001, ηp 2 = .27. This main effect was qualified by the predicted interaction between orientation and station, F(3, 194) = 16.28, p < .001, ηp2 = .20. We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p < .001, ηp2 = .28) and the station two stops to the west (Spadina, p = .001, ηp2 = .20). The opposite pattern held true for stations to the east of Bay Street. Eastbound participants rated the stations to the east of Bay Street as closer than did westbound participants; this effect was obtained for both the station one stop to the east (Bloor-Yonge, p = .053, ηp2 = .08) and the station two stops to the east (Sherbourne, p < .001, ηp2 = .24). Figure 1 summarizes these results.
+
+------
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+options(stringsAsFactors = FALSE)
+```
+
+# Step 1: Load packages
+
+```{r}
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+
+# #optional packages:
+# library(lsr)
+# library(ggthemes)
+```
+
+# Step 2: Load data
+
+```{r}
+# Just Study 1
+d <- read_excel ("data/S1_Subway.xlsx")
+```
+
+# Step 3: Tidy data
+
+The data are already tidy as provided by the authors.
+
+# Step 4: Run analysis
+
+## Pre-processing
+
+```{r}
+
+```
+
+## Inferential statistics
+
+> We carried out a 2 (orientation: toward, away from) × 4 (station: Spadina, St. George, Bloor-Yonge, Sherbourne) analysis of variance (ANOVA) on closeness ratings, which revealed no main effect of orientation, F < 1, and a main effect of station, F(3, 194) = 24.10, p < .001, ηp 2 = .27. This main effect was qualified by the predicted interaction between orientation and station, F(3, 194) = 16.28, p < .001, ηp2 = .20. 
+
+```{r test1}
+# reproduce the main effect of orientation
+
+# reproduce the main effect of station
+
+# reproduce the interaction between orientation and station
+
+```
+
+### Station-specific analyses
+
+> We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p < .001, ηp2 = .28) and the station two stops to the west (Spadina, p = .001, ηp2 = .20). The opposite pattern held true for stations to the east of Bay Street. Eastbound participants rated the stations to the east of Bay Street as closer than did westbound participants; this effect was obtained for both the station one stop to the east (Bloor-Yonge, p = .053, ηp2 = .08) and the station two stops to the east (Sherbourne, p < .001, ηp2 = .24). Figure 1 summarizes these results.
+
+#### St. George
+```{r st-george}
+# reproduce results for St. George
+
+```
+
+#### Spadina
+```{r spadina}
+## reproduce results for Spadina
+
+```
+
+#### Bloor-Yonge
+```{r bloor-yonge}
+## reproduce results for Bloor-Yonge
+
+```
+
+#### Sherbourne
+```{r sherbourne}
+## reproduce results for Sherbourne
+
+```
+
+# Step 5: Reflection
+
+Were you able to reproduce the results you attempted to reproduce? If not, what part(s) were you unable to reproduce?
+
+> ANSWER HERE
+
+How difficult was it to reproduce your results? 
+
+> ANSWER HERE
+
+What aspects made it difficult? What aspects made it easy?
+
+> ANSWER HERE
+

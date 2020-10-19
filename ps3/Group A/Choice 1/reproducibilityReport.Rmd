@@ -1,0 +1,91 @@
+---
+title: "Reproducibility Report: Group A Choice 1"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+-------
+
+For this exercise, please try to reproduce the results from Study 1 of the associated paper (Joel, Teper, & MacDonald, 2014). The PDF of the paper is included in the same folder as this Rmd file. 
+
+#### Methods summary: 
+
+In study 1, 150 introductory psychology students were randomly assigned to a "real" or a "hypothetical" condition. In the real condition, participants believed that they would have a real opportuniy to connect with potential romantic partners. In the hypothetical condition, participants simply imagined that they are on a date. All participants were required to select their favorite profile and answer whether they were willing to exchange contact information. 
+
+------
+
+#### Target outcomes: 
+
+Below is the specific result you will attempt to reproduce (quoted directly from the results section of Study 1):
+
+>> We next tested our primary hypothesis that participants would be more reluctant to reject the unattractive date when they believed the situation to be real rather than hypothetical. Only 10 of the 61 participants in the hypothetical condition chose to exchange contact information with the unattractive potential date (16%). In contrast, 26 of the 71 participants in the real condition chose to exchange contact information (37%). A chi-square test of independence indicated that participants were significantly less likely to reject the unattractive potential date in the real condition compared with the hypothetical condition, X^2(1, N = 132) = 6.77, p = .009.
+
+------
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+# Step 1: Load packages
+
+```{r}
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+
+# #optional packages:
+# library(broom)
+# library(labelled)# converts SPSS's labelled to R's factor 
+```
+
+# Step 2: Load data
+
+```{r}
+# Just Study 1
+d <- read_sav('data/Empathy Gap Study 1 data.sav')
+```
+
+# Step 3: Tidy data
+
+```{r}
+
+```
+
+# Step 4: Run analysis
+
+## Descriptive statistics
+
+> Only 10 of the 61 participants in the hypothetical condition chose to exchange contact information with the unattractive potential date (16%). In contrast, 26 of the 71 participants in the real condition chose to exchange contact information (37%).
+
+```{r}
+# reproduce the above results here
+
+```
+
+## Inferential statistics
+
+> A chi-square test of independence indicated that participants were significantly less likely to reject the unattractive potential date in the real condition compared with the hypothetical condition, X^2(1, N = 132) = 6.77, p = .009.
+
+```{r}
+# reproduce the above results here
+
+```
+
+# Step 5: Reflection
+
+Were you able to reproduce the results you attempted to reproduce? If not, what part(s) were you unable to reproduce?
+
+> ANSWER HERE
+
+How difficult was it to reproduce your results? 
+
+> ANSWER HERE
+
+What aspects made it difficult? What aspects made it easy?
+
+> ANSWER HERE
+
+

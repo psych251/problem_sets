@@ -1,0 +1,113 @@
+---
+title: "Reproducibility Report: Group A Choice 3"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+-------
+
+For this exercise, please try to reproduce the results from Experiment 6 of the associated paper (Shah, Shafir, & Mullainathan, 2015). The PDF of the paper is included in the same folder as this Rmd file. 
+
+#### Methods summary:
+
+The authors were interested in the effect of scarcity on people's consistency of valuation judgments. In this study, participants played a game of Family Feud and were given either 75 s (budget - "poor" condition) or 250 s (budget - "rich" condition) to complete the game. After playing the game, participants were either primed to think about a small account of time necessary to play one round of the game (account -"small" condition) or a large account (their overall time budget to play the entire game, account - "large" condition.) Participants rated how costly it would feel to lose 10s of time to play the game. The researchers were primarily interested in an interaction between the between-subjects factors of scarcity and account, hypothesizing that those in the budget - "poor" condition would be more consistent in their valuation of the 10s regardless of account in comparison with those in the budget - "rich" condition. The authors tested this hypothesis with a 2x2 between-subjects ANOVA.
+
+------
+
+#### Target outcomes: 
+
+Below is the specific result you will attempt to reproduce (quoted directly from the results section of Experiment 6):
+
+> "One participant was excluded because of a computer
+malfunction during the game. Time-rich participants
+rated the loss as more expensive when they thought
+about a small account (M = 8.31, 95% CI = [7.78, 8.84])
+than when they thought about a large account (M = 6.50,
+95% CI = [5.42, 7.58]), whereas time-poor participants’
+evaluations did not differ between the small-account
+condition (M = 8.33, 95% CI = [7.14, 9.52]) and the large account
+condition (M = 8.83, 95% CI = [7.97, 9.69]). A 2
+(scarcity condition) × 2 (account condition) analysis of
+variance revealed a significant interaction, F(1, 69) = 5.16,
+p < .05, ηp2 = .07." (Shah, Shafir & Mullainathan, 2015)
+------
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Step 1: Load packages
+
+```{r}
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+
+# #optional packages:
+# library(afex) #anova functions
+# library(langcog) #95 percent confidence intervals
+```
+
+# Step 2: Load data
+
+```{r}
+# Just Experiment 6
+data <- read_excel("data/study 6-accessible-feud.xlsx")
+```
+
+# Step 3: Tidy data
+
+The data are already tidy as provided by the authors.
+
+# Step 4: Run analysis
+
+## Pre-processing
+
+> One participant was excluded because of a computer malfunction during the game (Shah, Shafir, & Mullainathan, 2015, p. 408)
+
+Note: The original paper does not identify the participant that was excluded, but it was later revealed through communication with the authors that it was participant #16. The exclusion is performed below. 
+
+```{r}
+# Participant #16 should be dropped from analysis 
+excluded <- "16"
+
+d <- data %>%
+  filter(!Subject %in% excluded) #participant exclusions
+```
+
+## Descriptive statistics
+
+> Time-rich participants rated the loss as more expensive when they thought about a small account (M = 8.31, 95% CI = [7.78, 8.84]) than when they thought about a large account (M = 6.50, 95% CI = [5.42, 7.58]), whereas time-poor participants’ evaluations did not differ between the small-account condition (M = 8.33, 95% CI = [7.14, 9.52]) and the large- account condition (M = 8.83, 95% CI = [7.97, 9.69]). (Shah, Shafir, & Mullainathan, 2015, p. 408)
+
+```{r}
+# reproduce the above results here
+
+```
+
+## Inferential statistics
+
+> A 2 (scarcity condition) × 2 (account condition) analysis of variance revealed a significant interaction, F(1, 69) = 5.16, p < .05, ηp2 = .07.
+
+```{r}
+# reproduce the above results here
+
+```
+
+# Step 5: Reflection
+
+Were you able to reproduce the results you attempted to reproduce? If not, what part(s) were you unable to reproduce?
+
+> ANSWER HERE
+
+How difficult was it to reproduce your results? 
+
+> ANSWER HERE
+
+What aspects made it difficult? What aspects made it easy?
+
+> ANSWER HERE

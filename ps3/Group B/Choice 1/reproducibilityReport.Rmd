@@ -68,7 +68,7 @@ Each row is an observation. The data is already in tidy format.
 
 ### Pre-processing
 
-```{r bp-check-prime-codes, echo=FALSE, eval=FALSE}
+```{r}
 
 ```
 

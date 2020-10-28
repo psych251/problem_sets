@@ -29,6 +29,7 @@ d %>%
 write_csv(here("data/mutex.csv"))
 ```
 
+Load in the pre-cached data. 
 
 ```{r dataloading}
 d <- read_csv(here("data/mutex.csv"))
@@ -38,13 +39,13 @@ d <- read_csv(here("data/mutex.csv"))
 
 Always take a look at the data first.
 
-```{r}
+```{r examine}
 head(d)
 ```
 
 The effect sizes are in `d_calc` (for Cohen's $d$, calculated from the data). 
 
-```{r}
+```{r hist}
 ggplot(d, aes(x = d_calc)) + 
   geom_histogram(binwidth = .25) + 
   xlab("Effect Size (d)")
@@ -52,7 +53,7 @@ ggplot(d, aes(x = d_calc)) +
 
 Since these are developmental data, we can plot them against age. 
 
-```{r}
+```{r ageplot}
 ggplot(d, aes(x = mean_age_months, y = d_calc)) + 
   geom_point(aes(size = n), alpha = .5) + 
   geom_smooth(method = "lm") + 
@@ -65,7 +66,7 @@ ggplot(d, aes(x = mean_age_months, y = d_calc)) +
 
 Random effects meta-analysis - this is the default for `metafor`. The main command for metafor is `rma` - that's like the `lm` or `lmer` of the package. 
 
-```{r}
+```{r ranef}
 random_effects_mod <- rma(yi = d_calc, vi = d_var_calc, 
                      slab = short_cite, data = d)
 summary(random_effects_mod)
@@ -74,7 +75,7 @@ summary(random_effects_mod)
 
 For kicks, try fixed effects. 
 
-```{r}
+```{r fixef}
 # look up the documentation for rma and figure out how to do this!
 ```
 
@@ -82,13 +83,13 @@ For kicks, try fixed effects.
 
 `metafor` also lets you create forest plots. 
 
-```{r}
+```{r forest-ranef}
 forest(random_effects_mod)
 ```
 
 Compare to the forest plot for the fixed effects model.
 
-```{r}
+```{r forest-fixef}
 
 ```
 
@@ -96,7 +97,7 @@ Compare to the forest plot for the fixed effects model.
 
 A funnel plot can be used to diagnose publication bias (though it's not the most sensitive way to do so).
 
-```{r}
+```{r funnel}
 funnel(random_effects_mod)
 ```
 
@@ -105,14 +106,14 @@ funnel(random_effects_mod)
 
 Meta-regression asks whether study-level covariates (like say year of publication or average age of kids) are related to the effect size. 
 
-```{r}
+```{r metareg-age}
 meta_reg_model <- rma(yi = d_calc, vi = d_var_calc, mods = ~ mean_age_months, 
                      slab = short_cite, data = d)
 summary(meta_reg_model)
 ```
 Try asking if publication `year` is a significant meta-regressor.
 
-```{r}
+```{r metareg-year}
 
 ```
 

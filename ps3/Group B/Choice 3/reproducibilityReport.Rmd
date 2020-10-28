@@ -37,11 +37,13 @@ library(tidyverse) # for data munging
 library(knitr) # for kable table formating
 library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
 library(readxl) # import excel files
+library(afex)
+library(heplots)
 
 # #optional packages/functions:
-# library(afex) # anova functions
+ library(afex) # anova functions
 # library(ez) # anova functions 2
-# library(scales) # for plotting
+ library(scales) # for plotting
 # std.err <- function(x) sd(x)/sqrt(length(x)) # standard error
 ```
 
@@ -56,7 +58,7 @@ d <- read_excel(data_path, sheet=3)
 # Step 3: Tidy data
 
 ```{r}
-
+#data looks tidy already - no changes attempted
 ```
 
 # Step 4: Run analysis
@@ -64,7 +66,13 @@ d <- read_excel(data_path, sheet=3)
 ## Pre-processing
 
 ```{r}
+d2 <- d %>%
+  mutate(id=ifelse(group=="Moroccan",participant,participant+40)) %>%
+  arrange(group, participant,item) %>%
+  rename(rating= "Agreement (0=complete disagreement; 5=complete agreement)") %>%
+  distinct(id, group, participant, subscale, item, .keep_all=T)
 
+d2$group <- str_replace_all(d2$group, "young Spaniard", "Spaniard")
 ```
 
 ## Descriptive statistics
@@ -72,9 +80,20 @@ d <- read_excel(data_path, sheet=3)
 Try to recreate Figure 2 (fig2.png, also included in the same folder as this Rmd file):
 
 ```{r}
+d2_graph = d2 %>%
+  group_by(group, subscale) %>%
+  summarise(mean_rating = mean(rating, na.rm=T),
+            n=n(),
+            se_rating = sd(rating)/sqrt(n))
 
+d2_graph$group <- factor(d2_graph$group,levels=c("Spaniard", "Moroccan"))
+
+ggplot(d2_graph, aes(x=group, y=mean_rating, fill=subscale)) +
+  geom_bar(position="dodge", stat="identity") +
+  scale_y_continuous(limits=c(2.00, 4.00),oob = rescale_none) +
+  geom_errorbar(aes(ymin=mean_rating-se_rating, ymax=mean_rating+se_rating), width = .5, position=position_dodge(.9), na.rm=T) +
+  labs(y="Rating", x = "Group") 
 ```
-
 ## Inferential statistics
 
 > According to a mixed analysis of variance (ANOVA) with group (Spanish vs. Moroccan) as a between-subjects factor and temporal focus (past vs. future) as a within-subjects factor, temporal focus differed significantly between Spaniards and Moroccans, as indicated by a significant interaction of temporal focus and group, F(1, 78) = 19.12, p = .001, ηp2 = .20 (Fig. 2).
@@ -82,32 +101,49 @@ Try to recreate Figure 2 (fig2.png, also included in the same folder as this Rmd
 ```{r}
 # reproduce the above results here
 
+d3 <- d2 %>%
+  group_by(id, group, participant, subscale) %>%
+  summarise(rating=mean(rating))  #mean rating by participant for past/future subscale
+
+d3$id <- factor(d3$id)
+Within.aov.1 <- aov_car(rating ~ group*subscale + Error(id/subscale), data=d3, anova_table=list(es="pes"), na.rm = TRUE)
+summary(Within.aov.1)
+
+model.d <- aov(rating ~ as.factor(subscale)*as.factor(group), data=d3)
+summary(model.d)
+
+etasq(model.d, anova = FALSE, partial = TRUE)
+
 ```
 
 > Moroccans showed greater agreement with past-focused statements than Spaniards did, t(78) = 4.04, p = .001, 
 
 ```{r}
 # reproduce the above results here
-
+d4 <- d3 %>%
+  filter(subscale=="FUTURE")
+t.test(rating ~ group, data = d4)
 ```
 
 > and Spaniards showed greater agreement with future-focused statements than Moroccans did, t(78) = −3.32, p = .001.(de la Fuente et al., 2014, p. 1685)
 
 ```{r}
 # reproduce the above results here
-
+d5 <- d3 %>%
+  filter(subscale=="PAST")
+t.test(rating ~ group, data = d5)
 ```
 
 # Step 5: Reflection
 
 Were you able to reproduce the results you attempted to reproduce? If not, what part(s) were you unable to reproduce?
 
-> ANSWER HERE
+> I was only able to reproduce the figure 2. I was unable to reproduce other findings.
 
 How difficult was it to reproduce your results? 
 
-> ANSWER HERE
+> It was very difficult to reproduce the results. I was unsuccessful in doing so. I also surpassed the 3 hour mark, so I decided to stop working on the assignmnet as directed by Mike.
 
 What aspects made it difficult? What aspects made it easy?
 
-> ANSWER HERE
+> It's hard to tell what specifically made it difficult. I wasn't able to work with other members of the class on this assignment as much as I was able to do with my Group A choice 3 assignment. This really affected my abilitiy to progress. For someone who really does not have a strong statistics or R background, completing an assignmnet like this on my own is nearly impossible (especially in a 3 hour block of time)

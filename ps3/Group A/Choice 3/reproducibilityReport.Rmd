@@ -47,9 +47,10 @@ library(tidyverse) # for data munging
 library(knitr) # for kable table formating
 library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
 library(readxl) # import excel files
-
+library(dplyr)
 # #optional packages:
-# library(afex) #anova functions
+library(heplots)
+#library(afex) #anova functions
 # library(langcog) #95 percent confidence intervals
 ```
 
@@ -78,6 +79,8 @@ excluded <- "16"
 
 d <- data %>%
   filter(!Subject %in% excluded) #participant exclusions
+d <- d %>%
+  select(-c (8:14))
 ```
 
 ## Descriptive statistics
@@ -87,6 +90,15 @@ d <- data %>%
 ```{r}
 # reproduce the above results here
 
+d %>%
+  group_by(Large, Slack) %>%
+  summarise(Mean_Expense = mean(expense, na.rm=T),
+            n = n(),
+            SE_Expense = sd(expense)/sqrt(n)) %>%
+  mutate(lower_ci = Mean_Expense - qt(1 - (0.05/2), n-1) * SE_Expense,
+         upper_ci = Mean_Expense + qt(1- (0.05/2), n-1) * SE_Expense)
+  
+
 ```
 
 ## Inferential statistics
@@ -95,19 +107,23 @@ d <- data %>%
 
 ```{r}
 # reproduce the above results here
+model.d <- aov(expense ~ as.factor(Large)*as.factor(Slack), data=d)
+summary(model.d)
 
+etasq(model.d, anova = FALSE, partial = TRUE)
 ```
 
 # Step 5: Reflection
 
 Were you able to reproduce the results you attempted to reproduce? If not, what part(s) were you unable to reproduce?
 
-> ANSWER HERE
+> I was able to reprodice the findings.My upper and lower confidence intervals were slightly off however I felt that my reproduction was sufficiently similar to the original findings.
 
 How difficult was it to reproduce your results? 
 
-> ANSWER HERE
+> As someone who is new to both R and statistics, these findings were quite difficult to reproduce. I worked with a few other students from the course as we talked throguh our thought processes and shared our approches. This was the sole reason I was able to complete this reproduction in the alotted time of 3 hours. If I had not had others to bounce ideas off of, I would have taken significatnly longer and would not have been able to complete the reproduction in 3 hours.
+
 
 What aspects made it difficult? What aspects made it easy?
 
-> ANSWER HERE
+> As stated above, having others to code with made this assignmnet significantly more easy.That being said, finding a data set that was already tidy and has most preprocessing done made the assignment easier. Aspects that made this assignment difficult were simply that I wasn't entirely sure where I should have looked (in terms of pacakcges) for functions to complete the calculation I needed. Having a better understanding of statistics would hae made this assignment easier.

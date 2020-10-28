@@ -1,0 +1,118 @@
+---
+title: "Meta-Analysis Demo"
+author: "Psych 251"
+date: "10/27/2020"
+output: html_document
+---
+
+# Preliminaries
+
+Packages needed for the class example. 
+
+```{r packages}
+library(tidyverse)
+library(metafor)
+library(here)
+```
+
+You'd need to run this next chunk if you wanted to re-download the data from MetaLab, which would also mean installing the `metalabr` package (commented out). 
+
+```{r data, eval=FALSE}
+#devtools::install_github("langcog/metalabr")
+library(metalabr)
+ml_dataset_info <- get_metalab_dataset_info()
+d <- get_metalab_data(filter(ml_dataset_info, short_name == "mutex")) 
+d %>% 
+  select(long_cite, short_cite, expt_num, n, d_calc, d_var_calc, 
+         mean_age_months, year) %>%
+  filter(mean_age_months <= 24) %>% # subset for ease
+write_csv(here("data/mutex.csv"))
+```
+
+
+```{r dataloading}
+d <- read_csv(here("data/mutex.csv"))
+```
+
+# Basic descriptives
+
+Always take a look at the data first.
+
+```{r}
+head(d)
+```
+
+The effect sizes are in `d_calc` (for Cohen's $d$, calculated from the data). 
+
+```{r}
+ggplot(d, aes(x = d_calc)) + 
+  geom_histogram(binwidth = .25) + 
+  xlab("Effect Size (d)")
+```
+
+Since these are developmental data, we can plot them against age. 
+
+```{r}
+ggplot(d, aes(x = mean_age_months, y = d_calc)) + 
+  geom_point(aes(size = n), alpha = .5) + 
+  geom_smooth(method = "lm") + 
+  xlab("Mean age (months)") + 
+  ylab("Effect size (d)") + 
+  geom_hline(lty = 2, yintercept = 0)
+```
+
+# Meta-analysis
+
+Random effects meta-analysis - this is the default for `metafor`. The main command for metafor is `rma` - that's like the `lm` or `lmer` of the package. 
+
+```{r}
+random_effects_mod <- rma(yi = d_calc, vi = d_var_calc, 
+                     slab = short_cite, data = d)
+summary(random_effects_mod)
+```
+
+
+For kicks, try fixed effects. 
+
+```{r}
+# look up the documentation for rma and figure out how to do this!
+```
+
+# Forest plot
+
+`metafor` also lets you create forest plots. 
+
+```{r}
+forest(random_effects_mod)
+```
+
+Compare to the forest plot for the fixed effects model.
+
+```{r}
+
+```
+
+# Funnel plot
+
+A funnel plot can be used to diagnose publication bias (though it's not the most sensitive way to do so).
+
+```{r}
+funnel(random_effects_mod)
+```
+
+
+# Meta-regression
+
+Meta-regression asks whether study-level covariates (like say year of publication or average age of kids) are related to the effect size. 
+
+```{r}
+meta_reg_model <- rma(yi = d_calc, vi = d_var_calc, mods = ~ mean_age_months, 
+                     slab = short_cite, data = d)
+summary(meta_reg_model)
+```
+Try asking if publication `year` is a significant meta-regressor.
+
+```{r}
+
+```
+

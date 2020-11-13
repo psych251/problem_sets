@@ -74,7 +74,7 @@ k1_df %>%
   ggplot(...) 
 ```
 
-If you get this one, build out Figure 1b (left side) for `self.score.avg`. 
+If you get this one, build out Figure 1b (left side) for `sel.score.avg`. 
 
 # Exploratory analysis
 

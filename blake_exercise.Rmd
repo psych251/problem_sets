@@ -69,155 +69,34 @@ Make sure you understand what the design was: how many trials per participant, w
 In this second, explore the authors' hypotheses related to advantageous and inadvantageous inequity aversion. Create 1 - 3 pictures that describe the support (or lack of it) for this hypothesis. 
 
 ```{r}
-ms <- d %>%
-  filter(!is.na(eq.uneq)) %>%
-  mutate(age = floor(actor.age.years), 
-         decision = decision == "reject") %>%
-  group_by(country, trial_type, condition, age, actor.id) %>%
-  summarise(decision = mean(decision, na.rm=TRUE)) %>%
-  summarise(mean = mean(decision, na.rm=TRUE), 
-            ci_lower = mean(decision) - ci95(decision),
-            ci_upper = mean(decision) + ci95(decision),
-            n = n())
-
-ggplot(ms, aes(x = age, y = mean, col = country)) + 
-  geom_linerange(aes(ymin = ci_lower, ymax = ci_upper), 
-                  position = position_dodge(width = .1)) + 
-  geom_point(aes(size = n)) +
-  facet_grid(condition ~ trial_type) + 
-  geom_smooth(method="lm", se = FALSE) + 
-  ylab("Proportion offers rejected") +
-  xlab("Age (years)") +
-  ylim(c(0,1)) 
+ggplot(filter(d, !is.na(decision)), 
+       aes(x = actor.age.years, y = as.numeric(decision == "reject"), col = country)) + 
+  geom_jitter(alpha = .1, height = .05, width = .05) + 
+  facet_grid(trial_type ~ condition) + 
+  geom_smooth(method = "lm")
 ```
 
-Now rebin into 3-year bins.
+
 
 ```{r}
 ms <- d %>%
   filter(!is.na(eq.uneq)) %>%
-  mutate(age = floor(actor.age.years/2)*2, 
+  mutate(age = actor.age.years, 
          decision = decision == "reject") %>%
   group_by(country, trial_type, condition, age, actor.id) %>%
-  summarise(decision = mean(decision, na.rm=TRUE)) %>%
-  summarise(mean = mean(decision, na.rm=TRUE), 
-            ci_lower = mean(decision) - ci95(decision),
-            ci_upper = mean(decision) + ci95(decision),
-            n = n())
-
-ggplot(ms, aes(x = age, y = mean, col = country)) + 
-  geom_linerange(aes(ymin = ci_lower, ymax = ci_upper), 
-                  position = position_dodge(width = .1)) + 
-  geom_point(aes(size = n)) +
-  facet_grid(condition ~ trial_type) + 
-  geom_smooth(method="lm", se = FALSE) + 
-  ylab("Proportion offers rejected") +
-  xlab("Age (years)") +
-  ylim(c(0,1)) 
-```
-
-Break this down by country. I like this plot best so far. 
-
-```{r}
-ggplot(ms, aes(x = age, y = mean, col = condition)) + 
-  geom_linerange(aes(ymin = ci_lower, ymax = ci_upper), 
-                  position = position_dodge(width = .1)) + 
-  geom_point(aes(size = n)) +
-  facet_grid(trial_type ~ country) + 
-  geom_smooth(method="lm", se = FALSE, span = 2) + 
-  ylab("Proportion offers rejected") +
-  xlab("Age (years)") +
-  ylim(c(0,1)) 
-```
-
-But maybe we can do better. Let's:
-
-+ bootstrap CIs
-+ sort the plots
-+ add better smoother (quadratic)
-+ use lines instead of points
-+ better palette
-
-```{r}
-ms <- d %>%
-  filter(!is.na(eq.uneq)) %>%
-  mutate(age = floor(actor.age.years/2)*2, 
-         decision = decision == "reject") %>%
-  group_by(country, trial_type, condition, age, actor.id) %>%
-  summarise(decision = mean(decision, na.rm=TRUE)) %>%
-  summarise(mean = mean(decision, na.rm=TRUE), 
-           ci_lower = mean(decision) - ci95(decision),
-            ci_upper = mean(decision) + ci95(decision),
-            n = n())
+  summarise(mean = mean(decision, na.rm=TRUE))
 
 ms$country <- factor(ms$country, 
                      levels = c("Uganda","US","Canada",
-                                "Senegal","India","Peru","Mexico"))
+                              "Senegal","India","Peru","Mexico"))
 
 ggplot(ms, aes(x = age, y = mean, col = condition)) + 
-  geom_linerange(aes(ymin = mean - ci_lower, 
-                     ymax = mean + ci_upper), 
-                  position = position_dodge(width = .5)) + 
-  geom_point(aes(size=n)) +
+  geom_jitter(alpha = .3, width = 0, height = .02) +
   facet_grid(trial_type ~ country) + 
-  geom_smooth(method="lm", se = FALSE, formula = y ~ I(x^2), aes(weight = 1/n)) + 
-  ylab("Proportion offers rejected") +
-  xlab("Age (years)") +
-  ylim(c(0,1)) + 
-  langcog::scale_colour_solarized()
-```
-I'm still not super happy with the curves. Can we add some model-derived fits?
-
-I'd like to be fitting an lmer model. Unfortunately it doesn't converge on country subsets.
-
-So, let's ignore the p values and SEs, which will be wrong, and fit regular GLM. (The coefficients should be very similar because the design is balanced). 
-
-```{r}
-newdata <- expand.grid(actor.age.years = 4:14, 
-                       condition = factor(c("Advantageous","Disadvantageous")), 
-                       trial_type = factor(c("Equal","Unequal")))
-                     
-mods <- d %>% 
-  split(.$country) %>%
-  map_df(function(x) {
-    mod <- glm(decision == "reject" ~ condition * trial_type * actor.age.years,
-                data = x, 
-                family = "binomial")
-    return(predict(mod,  newdata=newdata))
-    })
-```
-
-Now plot these. This is not the *ideal* model, but it's way better than nothing. 
-
-```{r}
-nd <- expand.grid(actor.age.years = 4:14, 
-                                    condition = c("Advantageous","Disadvantageous"), 
-                                    trial_type = c("Equal","Unequal"))
-
-preds <- d %>%
-  group_by(country) %>%
-  do(data.frame(nd, 
-                preds = predict(glm(decision == "reject" ~ 
-                                      condition * trial_type * actor.age.years,
-                                    data = ., 
-                                    family = "binomial"), 
-                                newdata = nd, type = "response")))
-```                  
-
-Plot these and then put legends on the bottom. 
-
-```{r}
-ggplot(ms, aes(x = age, y = mean, col = condition)) + 
-  geom_linerange(aes(ymin = mean - ci_lower, 
-                     ymax = mean + ci_upper), 
-                  position = position_dodge(width = .5)) + 
-  geom_point(aes(size=n)) +
-  facet_grid(trial_type ~ country) + 
-  geom_line(data = preds, aes(x = actor.age.years, y = preds)) + 
   ylab("Proportion offers rejected") +
   xlab("Age (years)") +
   ylim(c(0,1)) + 
   langcog::scale_colour_solarized() + 
-  theme(legend.position = "bottom") + 
-  langcog::theme_mikabr()
+  theme_bw() + 
+  theme(legend.position = "bottom")
 ```

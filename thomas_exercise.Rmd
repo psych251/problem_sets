@@ -1,0 +1,88 @@
+---
+title: "Aid with Dignity"
+author: "Psych 251"
+date: "11/13/2020"
+output: html_document
+---
+
+# Introduction
+
+We're reproducing some data from Thomas et al. (2020), "Toward a science of delivering aid with dignity: Experimental evidence and local forecasts from Kenya." 
+
+[Catherine is a student and former TA in the course.]
+
+In particular, we'll focus on Study 1: Experimental Impacts of Aid Narratives on Recipients.
+
+The idea is to reproduce the basic effects of treatment that they saw, in particular, people who got a cash transfer heard that it was from either 1)  a community empowerment organization, 2) a poverty alleviation organization, or 3) an individual empowerment organization. Com (condition 1) and Ind (codition 3) recipients were found to watch more business education videos, and reported greater self efficacy and mobility and less stigma.
+
+Data from: [https://www.pnas.org/content/117/27/15546]()
+
+Repository: [https://osf.io/v3cr4/]() 
+
+This is an example of a pretty nicely organized repository that includes a readme, a great codebook, all code and data, etc. 
+
+```{r}
+library(tidyverse)
+load("data/KenyaData.RData")
+```
+
+Key variables are `treat` (treatment condition), `vid.num`, and various psychological treatments. We'll focus on self-efficacy.
+
+Let's make the appropriate composite for self-efficacy, copied from their code:
+
+```{r}
+scale.means = function (df, ..., na.rm=FALSE) {
+    vars = unlist(list(...))
+    mean_vars = rowMeans(df[,vars], na.rm=na.rm)
+    return(mean_vars)
+}
+
+for (var in c(k1_df$sel.con, k1_df$sel.pers, k1_df$sel.com, 
+              k1_df$sel.prob, k1_df$sel.bett)) {
+    var[var < 0] <- NA
+}
+
+k1_df$sel.score.avg <- scale.means(k1_df, "sel.con", "sel.pers", "sel.com", 
+                                   "sel.prob", "sel.bett", na.rm = T)
+k1_df$sel.score <- scale(k1_df$sel.con) + scale(k1_df$sel.pers) + 
+  scale(k1_df$sel.com) + scale(k1_df$sel.prob) + scale(k1_df$sel.bett)
+k1_df$sel.score.z <- scale(k1_df$sel.score)
+```
+
+# Descriptives
+
+Always good to make histograms of the dependent variables (`sel.score` and `vid.num`)! Use facets, fills, etc. to try and explore how these relate to treatment. 
+
+```{r}
+ggplot(k1_df, aes(x = ...)) + 
+  geom_histogram() 
+
+# try some faceting, e.g. facet_wrap(~treat)
+```
+
+
+# Reproduce main analysis
+
+Reproduce the behavioral result that `vid.num` is influenced by `treat`! (Figure 1a in the paper).
+
+Build out this simple stub code. 
+
+```{r}
+k1_df %>%
+  group_by(treat) %>%
+  summarise(...) %>%
+  ggplot(...) 
+```
+
+If you get this one, build out Figure 1b (left side) for `self.score.avg`. 
+
+# Exploratory analysis
+
+Consider exploratory analysis of demographic variables and how they relate to outcomes. 
+
+* `soc.fem` = gender
+* `soc.age` = age
+* `ses.unemployed` = employment
+* `soc.sav` = savings > 1000ksh
+* `soc.inc` = income
+

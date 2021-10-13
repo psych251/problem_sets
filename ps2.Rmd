@@ -77,7 +77,7 @@ tail(d)
 
 Notice that participant 23 has missing values for part 1.
 
-The researchers have made a column called `DoNotUse` based on their exlusion criteria. Use this column to filter the dataframe! (hint: this is a little trickier than it might be because of how R treats NA values. You may want to use `?unique` to check values in the column and check out `?is.na`.)
+The researchers have made a column called `DoNotUse` based on their exclusion criteria. Use this column to filter the dataframe! (hint: this is a little trickier than it might be because of how R treats NA values. You may want to use `?unique` to check values in the column and check out `?is.na`.)
 
 ```{r}
 filtered_d = d %>% 
@@ -258,13 +258,14 @@ summary(model)
 
 There are still a few more steps to go for the performance hypothesis. We need to take a difference score to see how people improved from before hearing the music to after, and then see if the improvement is larger if they heard music congruent with the type of game. 
 
-To compute the difference score, we have to make our data a bit wider. We now want to subtract the pre-music scores from the post-music scores, which is easiest to do if they are in two different columns. To do this we'll use the `spread` function (which is more or less the opposite of `gather`)
+To compute the difference score, we have to make our data a bit wider. We now want to subtract the pre-music scores from the post-music scores, which is easiest to do if they are in two different columns. To do this we'll use the `pivot_wider` function (which is more or less the opposite of `pivot_longer`)
 
 ```{r}
 performance_diff_d = performance_hyp_long_d %>%
   mutate(WithMusic = factor(WithMusic, levels=c(F, T), labels=c("PreMusic", "PostMusic"))) %>% # first, tweak the variable so our code is easier to read.
   select(-c("Score", "Measurement")) %>% # now we remove columns we don't need (bonus: leave them in and see if you can understand what goes wrong!)
-  spread(WithMusic, z_scored_performance) %>%
+  pivot_wider(names_from=WithMusic, 
+              values_from=z_scored_performance) %>%
   mutate(ImprovementScore=PostMusic-PreMusic)
 ```
 

@@ -2,8 +2,8 @@
 title: 'Blake et al. (2015) exercise'
 author: "Mike Frank"
 date: "November 15, 2019"
-output: 
-  html_document:
+format: 
+  html:
     toc: true
 ---
 
@@ -80,23 +80,28 @@ ggplot(filter(d, !is.na(decision)),
 
 ```{r}
 ms <- d %>%
-  filter(!is.na(eq.uneq)) %>%
-  mutate(age = actor.age.years, 
-         decision = decision == "reject") %>%
-  group_by(country, trial_type, condition, age, actor.id) %>%
-  summarise(mean = mean(decision, na.rm=TRUE))
+    filter(!is.na(eq.uneq)) %>%
+    mutate(
+        age = actor.age.years,
+        decision = decision == "reject"
+    ) %>%
+    group_by(country, trial_type, condition, age, actor.id) %>%
+    summarise(mean = mean(decision, na.rm = TRUE))
 
-ms$country <- factor(ms$country, 
-                     levels = c("Uganda","US","Canada",
-                              "Senegal","India","Peru","Mexico"))
+ms$country <- factor(ms$country,
+    levels = c(
+        "Uganda", "US", "Canada",
+        "Senegal", "India", "Peru", "Mexico"
+    )
+)
 
-ggplot(ms, aes(x = age, y = mean, col = condition)) + 
-  geom_jitter(alpha = .3, width = 0, height = .02) +
-  facet_grid(trial_type ~ country) + 
-  ylab("Proportion offers rejected") +
-  xlab("Age (years)") +
-  ylim(c(0,1)) + 
-  langcog::scale_colour_solarized() + 
-  theme_bw() + 
-  theme(legend.position = "bottom")
+ggplot(ms, aes(x = age, y = mean, col = condition)) +
+    geom_jitter(alpha = .3, width = 0, height = .02) +
+    facet_grid(trial_type ~ country) +
+    ylab("Proportion offers rejected") +
+    xlab("Age (years)") +
+    ylim(c(0, 1)) +
+    langcog::scale_colour_solarized() +
+    theme_bw() +
+    theme(legend.position = "bottom")
 ```

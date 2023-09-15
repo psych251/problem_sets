@@ -2,10 +2,9 @@
 title: "Psych 251 PS2: Tidying Data"
 author: "Andrew Lampinen"
 date: "September 27, 2018"
-output:
-  html_document:
+format:
+  html:
     toc: true
-    toc_float: true
 ---
 
 In this assignment we'll learn about `dplyr` and `tidyr`, two packages from the `tidyverse` that allow elegant and easily understandable data tidying and manipulation.

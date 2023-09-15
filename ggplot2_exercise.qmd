@@ -2,7 +2,7 @@
 title: 'ggplot2 intro exercise'
 author: "Mike Frank"
 date: "November 13, 2019"
-output: html_document
+output: html
 ---
   
 This is an in-class exercise on using `ggplot2`.
@@ -40,8 +40,10 @@ qplot(data = diamonds, price)
 Try adding clarity and cut, using shape and color as your visual variables. 
 
 ```{r}
-qplot(data = diamonds, 
-      x = carat, y = price, shape = clarity, color = cut)
+qplot(
+  data = diamonds,
+  x = carat, y = price, shape = clarity, color = cut
+)
 ```
 
 
@@ -53,7 +55,7 @@ sometimes easier to use and sometimes a bit more complicated. What I want to sho
 `ggplot` is the basic call, where you specify A) a dataframe and B) an aesthetic (`aes`) mapping from variables in the plot space to variables in the dataset. 
 
 ```{r}
-p <- ggplot(diamonds, aes(x=carat, y=price)) # first you set the aesthetic and dataset
+p <- ggplot(diamonds, aes(x = carat, y = price)) # first you set the aesthetic and dataset
 p <- p + geom_point() # then you add geoms
 
 p <- p + geom_point(aes(colour = carat)) # and you can keep doing this to add layers to the plot
@@ -65,8 +67,10 @@ Try writing this as a single set of additions (e.g. one line of R code, though y
 
 
 ```{r}
-ggplot(diamonds, 
-       aes(x = carat, y = price)) + 
+ggplot(
+  diamonds,
+  aes(x = carat, y = price)
+) +
   geom_point(aes(colour = carat))
 ```
 
@@ -76,19 +80,25 @@ ggplot(diamonds,
 Let's try out another version of the `qplot` example above. Rewrite the last qplot example with ggplot.
 
 ```{r}
-ggplot(diamonds, 
-      aes(x = carat, y = price, 
-          shape = clarity, color = cut)) + 
-  geom_point() 
+ggplot(
+  diamonds,
+  aes(
+    x = carat, y = price,
+    shape = clarity, color = cut
+  )
+) +
+  geom_point()
 ```
 
 One of the primary benefits of `ggplot2` is the use of facets - also known as small multiples in the Tufte vocabulary. That last plot was probably hard to read. Facets could make it better. Try adding `facet_grid(x ~ y)`.  `x ~ y` means row facets are by `x`, column facets by `y`. 
 
 ```{r}
-ggplot(diamonds, 
-      aes(x = carat, y = price)) + 
-  geom_point() + 
-  facet_grid(clarity ~ cut) 
+ggplot(
+  diamonds,
+  aes(x = carat, y = price)
+) +
+  geom_point() +
+  facet_grid(clarity ~ cut)
 ```
 
 But facets can also get overwhelming. Try to strike a good balance between color, shape, and faceting.
@@ -96,11 +106,13 @@ But facets can also get overwhelming. Try to strike a good balance between color
 HINT: `facet_grid(. ~ x)` puts x on the columns, but `facet_wrap(~ x)` (no dot) *wraps* the facets. 
 
 ```{r}
-p <- ggplot(diamonds, 
-      aes(x = carat, y = price)) +
-  geom_point(aes( color = clarity)) + 
-  geom_smooth(method="lm") + 
-  facet_wrap(~cut) 
+p <- ggplot(
+  diamonds,
+  aes(x = carat, y = price)
+) +
+  geom_point(aes(color = clarity)) +
+  geom_smooth(method = "lm") +
+  facet_wrap(~cut)
 ```
 
 
@@ -111,9 +123,9 @@ As you've seen above, the basic unit of a ggplot plot is a "geom" - a mapping be
 Let's try adding some geoms and manipulating their parameters. One combo I really like is a scatterplot with a smoothing layer (`geom_smooth`). Try adding one onto this plot. 
 
 ```{r}
-ggplot(diamonds, aes(x=carat, y=price)) +
+ggplot(diamonds, aes(x = carat, y = price)) +
   geom_point(shape = ".") +
-  facet_grid(cut ~ clarity) 
+  facet_grid(cut ~ clarity)
 ```
 
 
@@ -136,19 +148,23 @@ Finally, don't forget to "fix the axis labels"!
 Here's a somewhat ugly plot - see if you can make it look awesome. 
 
 ```{r}
-ggplot(diamonds, aes(x = carat, y = price, 
-                     col = cut)) + 
-  geom_point() + 
-  facet_wrap(~clarity) 
+ggplot(diamonds, aes(
+  x = carat, y = price,
+  col = cut
+)) +
+  geom_point() +
+  facet_wrap(~clarity)
 ```
 
 ```{r}
-ggplot(diamonds, aes(x = carat, y = price, 
-                     col = clarity)) + 
-  geom_point(alpha = .1) + 
-  facet_wrap(~cut)  + 
-  langcog::theme_mikabr() + 
-  theme(legend.position = "bottom") + 
-  ylab("Price ($)") + 
+ggplot(diamonds, aes(
+  x = carat, y = price,
+  col = clarity
+)) +
+  geom_point(alpha = .1) +
+  facet_wrap(~cut) +
+  langcog::theme_mikabr() +
+  theme(legend.position = "bottom") +
+  ylab("Price ($)") +
   xlab("Carat")
 ```

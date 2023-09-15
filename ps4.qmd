@@ -2,8 +2,8 @@
 title: 'Psych 251 PS4: Simulation + Analysis'
 author: "Mike Frank"
 date: "2019"
-output: 
-  html_document:
+format: 
+  html:
     toc: true
 ---
 
@@ -73,7 +73,7 @@ Consider this scenario: you have done an experiment, again with 30 participants 
 First, write a function that implements this sampling regime.
 
 ```{r}
-double.sample <- function () {
+double.sample <- function() {
 }
 ```
 

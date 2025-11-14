@@ -68,7 +68,7 @@ ggplot(d, aes(...)) +
 
 The approach that's taken in the paper is to explain panel variation by average panel differences. 
 
-This part is a little tricky so I've included it. 
+This part is a little tricky so I've included it. (There's probably a better way to do the effect sizes). 
 
 ```{r}
 sunk_effect <- d |>

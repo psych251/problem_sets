@@ -71,11 +71,11 @@ ggplot(k1_df, aes(x = sel.score.avg)) +
 Reproduce the behavioral result that `vid.num` is influenced by `treat`! (Figure 1a in the paper).
 
 ```{r}
-k1_df %>%
-  group_by(treat) %>%
+k1_df |>
+  group_by(treat) |>
   summarise(mean_vids = mean(vid.num), 
             se_vids = sd(vid.num) / sqrt(n()), 
-            n = n()) %>%
+            n = n()) |>
   ggplot(aes(x = treat, y = mean_vids)) + 
   geom_pointrange(aes(ymin = mean_vids - se_vids, ymax = mean_vids + se_vids))
 ```
@@ -84,11 +84,11 @@ k1_df %>%
 Same for `sel.score`.
 
 ```{r}
-k1_df %>%
-  group_by(treat) %>%
+k1_df |>
+  group_by(treat) |>
   summarise(mean_sel = mean(sel.score.avg), 
             se_sel = sd(sel.score.avg) / sqrt(n()), 
-            n = n()) %>%
+            n = n()) |>
   ggplot(aes(x = treat, y = mean_sel)) + 
   geom_pointrange(aes(ymin = mean_sel - se_sel, ymax = mean_sel + se_sel))
 ```
@@ -113,6 +113,8 @@ ggplot(k1_df,
   facet_wrap(~treat)
 ```
 
+For number of videos. 
+
 ```{r}
 ggplot(k1_df, 
        aes(x = soc.age, y = vid.num)) + 
@@ -129,6 +131,8 @@ ggplot(k1_df,
   geom_point() +
   geom_smooth(method = "lm")
 ```
+
+For number of videos. 
 
 
 ```{r}

@@ -112,6 +112,7 @@ ggplot(k1_df,
   geom_smooth(method = "lm") + 
   facet_wrap(~treat)
 ```
+
 ```{r}
 ggplot(k1_df, 
        aes(x = soc.age, y = vid.num)) + 

@@ -1,0 +1,111 @@
+---
+title: "Psych 251 PS1: Git and GitHub, by humans"
+format:
+  html:
+    toc: true
+---
+
+**Due Sunday September 27, 11:59pm. Submit the URL of your repository on Canvas.**
+
+**Rule for this problem set:** you do every step yourself, at the command line or in
+RStudio/GitHub Desktop. You may ask an agent or a classmate to *explain* anything, but no
+agent may run commands, write files, or open pull requests for you. For the rest of the
+quarter agents will do most of the typing; this is the one time you build the mental model
+by hand, so that you can tell when an agent has done something wrong to your repository.
+
+Start with the tutorial in [Experimentology Appendix B](https://experimentology.io/101-github.html),
+which we walk through in class on Friday. Steps 1–3 below are that tutorial; steps 4–8 are new.
+
+## 1. Set up
+
+- Create a GitHub account if you do not have one and post your username in the Slack
+  thread so we can add you to the `psych251` organization.
+- Install git, and set your name and email:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@stanford.edu"
+```
+
+- Authenticate to GitHub (the GitHub CLI `gh auth login` is the easiest route).
+
+## 2. Create a repository
+
+Create a **public** repository on your own account named `psych251-ps1` with a README.
+Clone it. Edit the README so it says what the repo is and who you are. Commit and push.
+
+## 3. Add a second file and push a change
+
+Create `hello.qmd`, a minimal Quarto document with one code chunk (for example
+`summary(cars)`). Render it locally. Commit the `.qmd` (not the rendered HTML yet) and push.
+Then make one more change to `hello.qmd`, commit, and push again, so the file has at least
+two commits in its history.
+
+## 4. Branch and pull request
+
+- Create a branch called `add-plot`.
+- On that branch, add a chunk to `hello.qmd` that makes a ggplot. Commit and push the branch.
+- On GitHub, open a **pull request** from `add-plot` into `main`. Write a one-paragraph
+  description of what the PR does and why.
+- Do **not** merge it yet.
+
+## 5. Review a classmate's pull request
+
+Pair with a classmate (find one on Slack). Add each other as collaborators
+(Settings → Collaborators). Each of you reviews the other's PR on GitHub: leave at least
+one comment on a specific line, and then approve. Once your PR has been approved, merge it
+and delete the branch.
+
+## 6. Create and resolve a merge conflict
+
+This one is deliberately painful. Two changes to the same lines have to be reconciled by a
+human, and agents get this wrong surprisingly often.
+
+- On `main`, change the title line in `hello.qmd` to "Hello, conflicts". Commit and push.
+- Create a new branch `other-title` **from the commit before that change** (`git checkout -b
+  other-title HEAD~1`). Change the same title line to something different. Commit.
+- Try to merge `main` into `other-title` (`git merge main`). Git will report a conflict.
+  Open the file, look at the conflict markers, choose or combine the titles, delete the
+  markers, and commit the resolution. Push the branch and merge it into `main` on GitHub
+  (a PR is fine, no review needed).
+
+Your history on `main` should now show a merge commit whose message mentions the conflict
+resolution.
+
+## 7. Keep data and secrets out of the repo
+
+- Add a `data/` folder with a small CSV of your choice in it.
+- Add a `.gitignore` that ignores `*.html` (rendered output) and a file called `.secrets`.
+- Create a `.secrets` file with a fake token in it. Confirm with `git status` that git does
+  not see it. Commit the `.gitignore` and the CSV.
+
+Why this matters: your project repo will hold participant data that must be anonymized
+before it is pushed, and you will use API tokens for agents and Canvas. A wrong `.gitignore`
+puts those on the public internet, and removing something from git history is far harder
+than never committing it.
+
+## 8. Publish with GitHub Pages
+
+- Render `hello.qmd` to HTML and put the output in a `docs/` folder as `docs/index.html`
+  (you can set `output-dir: docs` in a `_quarto.yml`, or move the file). Remove `*.html`
+  from `.gitignore` or add an exception for `docs/`.
+- Commit and push. In Settings → Pages, choose "Deploy from a branch", branch `main`,
+  folder `/docs`. After a minute, `https://<username>.github.io/psych251-ps1/` shows your page.
+- Put that URL at the top of your README.
+
+You will use this exact mechanism to host your experiment and your replication report.
+
+## What we grade (10 points)
+
+| | Points |
+|---|---|
+| Repo exists on your account with a descriptive README | 1 |
+| `hello.qmd` with at least two commits | 1 |
+| A merged pull request with a description, approved by a classmate | 2 |
+| A review comment you left on a classmate's PR (give us their repo URL in your README) | 2 |
+| A merge commit that resolved a real conflict | 2 |
+| `.gitignore` present; no `.html` outside `docs/` and no `.secrets` in the history | 1 |
+| GitHub Pages URL in the README, serving your rendered page | 1 |
+
+Add one line at the bottom of your README: "AI use: none" (or, if you asked an agent to
+explain something, one sentence on what).

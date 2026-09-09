@@ -1,0 +1,75 @@
+---
+title: "Psych 251 PS4: Reproducibility check"
+format:
+  html:
+    toc: true
+---
+
+**Due Sunday November 8, 11:59pm. Submit the URLs of your two rendered reports on Canvas.**
+
+## Why
+
+Analytic reproducibility is the floor: given the authors' data and their description of the
+analysis, can someone else get the numbers in the paper? Past checks of open-data papers in
+psychology found that a large fraction could not be reproduced without contacting the
+authors, and that the process takes hours per paper. Agents change the cost of this work
+dramatically. This problem set asks how much, and produces a small reproducibility census
+of a recent corpus that the class will write up together.
+
+Read Experimentology Chapter 3 (replication and reproducibility) and Chapter 13 (project
+management) first.
+
+## Part A: calibration on a known case (about one hour)
+
+Pick **one** article from `ps4/Group A` or `ps4/Group B` (any Choice). Each folder has the
+PDF, the authors' data, and `reproducibilityReport.Rmd` describing the target outcomes.
+
+Direct an agent to reproduce the target outcomes. Give it the folder and the report template
+and nothing else. Do not help it beyond answering questions about where files are. When it
+declares itself done, render its report and fill in the **checker's verdict** section of
+`ps4_check_template.qmd` yourself: for each target statistic, did the agent's value match the
+paper (exact / minor discrepancy / major discrepancy / not attempted), and did the agent's
+own claim about success match reality?
+
+We know how each of these six articles turns out. The point of Part A is to see how your
+agent behaves when you can check it.
+
+## Part B: a paper in the wild (the real work)
+
+You will be assigned one recent open-data article from the class corpus (posted on Canvas
+in the week of October 26; each paper goes to two students who work independently and must
+not compare notes before the deadline).
+
+Using `ps4_check_template.qmd`:
+
+1. **Identify the target outcomes**: the key statistical results from the abstract and the
+   primary analysis (typically 3–6 numbers: test statistics, p-values, effect sizes,
+   descriptives). Write them down before touching the data.
+2. **Obtain the data and materials** from the repository linked in the paper. Record what
+   was available (data, codebook, analysis code) and what was missing.
+3. **Reproduce**, with an agent doing the work under your direction. Keep the agent's
+   transcript or a log of prompts. You may intervene as much as you like, but log it.
+4. **Report** per target outcome: reproduced value, paper value, verdict (exact / minor /
+   major / not reproducible), and the reason for any discrepancy if you found one.
+5. **Time**: total hours, split into your time and agent wall-clock time. Stop at **4 hours**
+   and report what remained.
+6. **Assessment**: is the paper's primary result analytically reproducible? What would the
+   authors have needed to provide for this to take 30 minutes?
+
+## What you turn in
+
+Two rendered reports from `ps4_check_template.qmd` (one for Part A, one for Part B), each
+including the agent's code, your verdicts, and an AI-use log. Put both in a public repo.
+
+## Grading (10 points)
+
+| | Points |
+|---|---|
+| Part A: verdict table complete and accurate against the known outcome | 3 |
+| Part B: target outcomes identified up front; data and materials inventory | 2 |
+| Part B: reproduction attempted for every target outcome with a per-outcome verdict and reasons | 3 |
+| Part B: time accounting, assessment, and AI-use log | 2 |
+
+Discrepancies are not your fault and cost no points; unexplained discrepancies do. The
+class's Part B verdicts will be aggregated (with agreement between the two checkers per
+paper) into a short report we will discuss together.

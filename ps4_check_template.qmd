@@ -1,0 +1,85 @@
+---
+title: "Reproducibility check: [Author et al. (Year)]"
+author: "[Your name]"
+date: today
+format:
+  html:
+    toc: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Article
+
+- Citation and DOI:
+- Data/materials repository URL:
+- Part A (known case) or Part B (class corpus):
+
+## Target outcomes
+
+Written **before** opening the data. Quote each from the paper.
+
+| # | Target outcome (quoted) | Paper value(s) |
+|---|---|---|
+| 1 | | |
+| 2 | | |
+| 3 | | |
+
+## Materials inventory
+
+| Item | Available? | Notes |
+|---|---|---|
+| Raw data | | |
+| Processed data | | |
+| Codebook / variable descriptions | | |
+| Analysis code | | |
+| Preregistration | | |
+
+## Reproduction
+
+The agent's work, under your direction. Keep all code visible.
+
+```{r}
+#| label: setup
+library(tidyverse)
+```
+
+```{r}
+#| label: load
+```
+
+```{r}
+#| label: preprocess
+```
+
+```{r}
+#| label: analysis
+```
+
+## Checker's verdict
+
+Filled in by you, not the agent.
+
+| # | Paper value | Reproduced value | Verdict (exact / minor / major / not reproducible) | Reason for discrepancy |
+|---|---|---|---|---|
+| 1 | | | | |
+| 2 | | | | |
+| 3 | | | | |
+
+Agent's own claim about success, and whether it was right:
+
+## Time
+
+- Your time (hours):
+- Agent wall-clock time (hours):
+- Stopped at the 4-hour cap? What remained:
+
+## Assessment
+
+Is the primary result analytically reproducible? What would have made this take 30 minutes?
+
+## AI-use log
+
+Tools, prompts, interventions.

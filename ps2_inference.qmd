@@ -1,0 +1,75 @@
+---
+title: "Psych 251 PS2: Inference and p-hacking"
+format:
+  html:
+    toc: true
+---
+
+**Due Sunday October 11, 11:59pm. Closed-book quiz in class Monday October 12 (first 30 minutes).**
+
+Three parts, 15 points: Part 1 (5, completion), Part 2 (5), and the quiz (5).
+
+## Part 1: Learn six concepts, however you want, with agents
+
+By the quiz you need to genuinely understand:
+
+1. **p-values.** What a p-value is and is not; what the distribution of p-values looks like
+   under the null and under a true effect.
+2. **Multiplicity.** How the false-positive rate grows with the number of tests;
+   corrections and when they apply.
+3. **p-hacking.** Optional stopping, outcome switching, covariate fishing, subgroup hunting,
+   flexible exclusions, the garden of forking paths; why each is multiplicity in disguise
+   and what preregistration fixes.
+4. **Statistical power.** Power as a function of effect size, N, and alpha; what
+   underpowered studies do to the literature (Type M and Type S errors); why pilots cannot
+   estimate effect sizes.
+5. **Confidence intervals.** What a 95% CI does and does not tell you; the relationship to
+   the standard error and to sample size; CIs versus significance.
+6. **Bayes factors.** What a Bayes factor compares; how to read BF10 = 3, 10, 1/3; how it
+   differs from a p-value; why it is independent of the prior odds on the hypotheses but
+   not of the prior on the effect size under H1.
+
+How you learn them is up to you, and you are expected to use agents. Some things you might
+do: have an agent build an interactive simulator and then try to break it; ask an agent to
+generate a quiz bank and grade yourself; build a Quarto tutorial with live simulations of
+optional stopping; have two agents argue about Bayes factors and adjudicate. Experimentology
+Chapters 5, 6, and 10 are the reference.
+
+Turn in a short document (one to two pages) with: what you did, with links to anything you
+built; one paragraph per concept in your own words, written without an agent open; one
+thing an agent told you that was wrong or misleading and how you caught it (or what you
+checked); and your AI-use log. No plots required here. Graded for completion and honesty.
+
+## Part 2: Grade an agent
+
+`data/ps2_inference/flanker_rt.csv` holds trial-level data from a small flanker experiment;
+`data/ps2_inference/codebook.md` describes the columns and the preprocessing rules. Give
+**one agent of your choice** the two files and exactly this prompt, with no hints:
+
+> Using the codebook's exclusion rules, test whether response times differ between
+> congruent and incongruent trials. Report the estimate, a 95% confidence interval, a
+> p-value, and a plot. Explain your choices.
+
+Save the agent's output **unedited** in your repo (`runs/flanker/`). Then, without the
+agent, write a one-page grading of its work:
+
+- Did it apply all four codebook rules? Which did it miss?
+- What test did it run, and is that the right test for how these data are structured?
+  (Think about what the rows are and how they are grouped.)
+- Is its conclusion right? Say what you believe now; the key is released after the
+  deadline and you will not lose points for being wrong, only for not committing.
+- Any hallucinated functions, arguments, or facts?
+
+Then do the analysis yourself, in a way you can defend, and report your own estimate,
+CI, and p-value with a plot.
+
+## Quiz
+
+Paper, 30 minutes, no devices, about 15 questions: short answer, numerical, and
+sketching. Several questions ask you to **draw a plot** (a p-value distribution, a power
+curve) or to **read a plot** we give you. Bring a pencil.
+
+## What you turn in
+
+One rendered report (HTML link on Canvas) containing Part 1, Part 2 with the agent's
+output included or linked, your own analysis with code visible, and an AI-use log.

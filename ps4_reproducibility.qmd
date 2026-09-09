@@ -72,4 +72,4 @@ including the agent's code, your verdicts, and an AI-use log. Put both in a publ
 
 Discrepancies are not your fault and cost no points; unexplained discrepancies do. The
 class's Part B verdicts will be aggregated (with agreement between the two checkers per
-paper) into a short report we will discuss on Friday November 13.
+paper) into a short report we will discuss together.

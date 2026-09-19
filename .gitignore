@@ -3,3 +3,7 @@
 # Quarto outputs
 *_files/
 *.html
+# local-only solutions and scratch
+archive/answers/
+archive/de-answer.py
+.Rhistory

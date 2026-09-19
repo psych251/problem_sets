@@ -47,8 +47,8 @@ Using `ps3_check_template.qmd`:
    descriptives). Write them down before touching the data.
 2. **Obtain the data and materials** from the repository linked in the paper. Record what
    was available (data, codebook, analysis code) and what was missing.
-3. **Reproduce**, with an agent doing the work under your direction. Keep the agent's
-   transcript or a log of prompts. You may intervene as much as you like, but log it.
+3. **Reproduce**, with an agent doing the work under your direction. Export the agent's
+   transcript (see below). You may intervene as much as you like, but log it.
 4. **Report** per target outcome: reproduced value, paper value, verdict (exact / minor /
    major / not reproducible), and the reason for any discrepancy if you found one.
 5. **Time**: total hours, split into your time and agent wall-clock time. Stop at **4 hours**
@@ -56,10 +56,24 @@ Using `ps3_check_template.qmd`:
 6. **Assessment**: is the paper's primary result analytically reproducible? What would the
    authors have needed to provide for this to take 30 minutes?
 
+## Documenting the agent
+
+Both reports end with an **AI documentation** section: which agent and interface you used,
+the model and version if the tool reports it, what context you gave it, how often you
+intervened, and a link to the **exported transcript**, committed to your repo under
+`transcripts/`. If your tool cannot export a transcript, paste your prompts in order
+instead. Read the transcript before you commit it and remove anything private (tokens,
+file paths you would rather not share).
+
+We will analyze the transcripts in aggregate as part of the class report: which agents
+were used, where they went wrong, and how much human steering a reproduction takes. If
+you would prefer that yours not be included, say so in your report; it will not affect
+your grade.
+
 ## What you turn in
 
 Two rendered reports from `ps3_check_template.qmd` (one for Part A, one for Part B), each
-including the agent's code, your verdicts, and an AI-use log. Put both in a public repo.
+including the agent's code, your verdicts, and the AI documentation section. Put both in a public GitHub repo and publish the rendered HTML with GitHub Pages, as you did in Problem Set 1; submit the two Pages URLs.
 
 ## Grading (15 points)
 
@@ -68,7 +82,7 @@ including the agent's code, your verdicts, and an AI-use log. Put both in a publ
 | Part A: verdict table complete and accurate against the known outcome | 4 |
 | Part B: target outcomes identified up front; data and materials inventory | 3 |
 | Part B: reproduction attempted for every target outcome with a per-outcome verdict and reasons | 5 |
-| Part B: time accounting, assessment, and AI-use log | 3 |
+| Part B: time accounting, assessment, and AI documentation with transcript | 3 |
 
 Discrepancies are not your fault and cost no points; unexplained discrepancies do. The
 class's Part B verdicts will be aggregated (with agreement between the two checkers per

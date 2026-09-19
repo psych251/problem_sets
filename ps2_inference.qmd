@@ -1,0 +1,46 @@
+---
+title: "Psych 251 PS2: Inference and p-hacking"
+format:
+  html:
+    toc: true
+---
+
+**Due Sunday October 11, 11:59pm. Closed-book quiz in class Monday October 12 (first 30 minutes).**
+
+15 points: a short study note (5, graded on completion) and the quiz (10).
+
+## The concepts
+
+The quiz covers six concepts from Experimentology Chapters
+[5](https://experimentology.io/005-estimation.html),
+[6](https://experimentology.io/006-inference.html), and
+[10](https://experimentology.io/010-sampling.html):
+
+1. **p-values.** What a p-value is and is not; what the distribution of p-values looks like
+   under the null and under a true effect.
+2. **Multiplicity.** How the false-positive rate grows with the number of tests.
+3. **p-hacking.** Optional stopping, selective reporting of outcomes, and flexible
+   exclusions or subgroups; why each inflates false positives, and how preregistration helps.
+4. **Statistical power.** Power as a function of effect size, N, and alpha; what
+   underpowered studies do to the literature; why pilots cannot estimate effect sizes.
+5. **Confidence intervals.** What a confidence interval does and does not tell you.
+6. **Bayes factors.** What a Bayes factor compares; how to read BF10 = 3, 10, or 1/3; how it
+   differs from a p-value.
+
+## Study however you want
+
+How you learn these is up to you, and using agents is encouraged. Some things you might
+do: have an agent build an interactive simulator and then try to break it; ask an agent to
+generate practice questions; build a small Quarto tutorial with simulations of optional
+stopping. You do not have to build anything.
+
+## What you turn in
+
+One paragraph on what you did to study, with links to anything you created (a repo, a
+page, a notebook, a shared chat). That's it. Submit it as text on Canvas.
+
+## The quiz
+
+Paper, 30 minutes, no devices, about 15 questions: short answer, numerical, and
+sketching. Several questions ask you to **draw a plot** (a p-value distribution, a power
+curve) or to **read a plot** we give you. Bring a pencil.

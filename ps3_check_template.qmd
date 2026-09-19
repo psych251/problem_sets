@@ -80,6 +80,11 @@ Agent's own claim about success, and whether it was right:
 
 Is the primary result analytically reproducible? What would have made this take 30 minutes?
 
-## AI-use log
+## AI documentation
 
-Tools, prompts, interventions.
+- Agent and interface (e.g., Claude Code, Codex CLI, Cursor):
+- Model and version, if the tool reports it:
+- Context you gave it (files, instructions, any context file):
+- Number of times you intervened, and the most important intervention:
+- Transcript: link to the exported transcript in your repo (`transcripts/`). If your tool
+  cannot export one, paste your prompts in order here instead.

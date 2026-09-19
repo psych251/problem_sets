@@ -1,11 +1,11 @@
 ---
-title: "Psych 251 PS4: Reproducibility check"
+title: "Psych 251 PS3: Reproducibility check"
 format:
   html:
     toc: true
 ---
 
-**Due Sunday November 8, 11:59pm. Submit the URLs of your two rendered reports on Canvas.**
+**Due Sunday November 22, 11:59pm. Submit the URLs of your two rendered reports on Canvas.**
 
 ## Why
 
@@ -21,13 +21,13 @@ management) first.
 
 ## Part A: calibration on a known case (about one hour)
 
-Pick **one** article from `ps4/Group A` or `ps4/Group B` (any Choice). Each folder has the
+Pick **one** article from `ps3/Group A` or `ps3/Group B` (any Choice). Each folder has the
 PDF, the authors' data, and `reproducibilityReport.Rmd` describing the target outcomes.
 
 Direct an agent to reproduce the target outcomes. Give it the folder and the report template
 and nothing else. Do not help it beyond answering questions about where files are. When it
 declares itself done, render its report and fill in the **checker's verdict** section of
-`ps4_check_template.qmd` yourself: for each target statistic, did the agent's value match the
+`ps3_check_template.qmd` yourself: for each target statistic, did the agent's value match the
 paper (exact / minor discrepancy / major discrepancy / not attempted), and did the agent's
 own claim about success match reality?
 
@@ -37,18 +37,18 @@ agent behaves when you can check it.
 ## Part B: a paper in the wild (the real work)
 
 You will be assigned one recent open-data article from the class corpus (posted on Canvas
-in the week of October 26; each paper goes to two students who work independently and must
+in week 8; each paper goes to two students who work independently and must
 not compare notes before the deadline).
 
-Using `ps4_check_template.qmd`:
+Using `ps3_check_template.qmd`:
 
 1. **Identify the target outcomes**: the key statistical results from the abstract and the
    primary analysis (typically 3–6 numbers: test statistics, p-values, effect sizes,
    descriptives). Write them down before touching the data.
 2. **Obtain the data and materials** from the repository linked in the paper. Record what
    was available (data, codebook, analysis code) and what was missing.
-3. **Reproduce**, with an agent doing the work under your direction. Keep the agent's
-   transcript or a log of prompts. You may intervene as much as you like, but log it.
+3. **Reproduce**, with an agent doing the work under your direction. Export the agent's
+   transcript (see below). You may intervene as much as you like, but log it.
 4. **Report** per target outcome: reproduced value, paper value, verdict (exact / minor /
    major / not reproducible), and the reason for any discrepancy if you found one.
 5. **Time**: total hours, split into your time and agent wall-clock time. Stop at **4 hours**
@@ -56,19 +56,33 @@ Using `ps4_check_template.qmd`:
 6. **Assessment**: is the paper's primary result analytically reproducible? What would the
    authors have needed to provide for this to take 30 minutes?
 
+## Documenting the agent
+
+Both reports end with an **AI documentation** section: which agent and interface you used,
+the model and version if the tool reports it, what context you gave it, how often you
+intervened, and a link to the **exported transcript**, committed to your repo under
+`transcripts/`. If your tool cannot export a transcript, paste your prompts in order
+instead. Read the transcript before you commit it and remove anything private (tokens,
+file paths you would rather not share).
+
+We will analyze the transcripts in aggregate as part of the class report: which agents
+were used, where they went wrong, and how much human steering a reproduction takes. If
+you would prefer that yours not be included, say so in your report; it will not affect
+your grade.
+
 ## What you turn in
 
-Two rendered reports from `ps4_check_template.qmd` (one for Part A, one for Part B), each
-including the agent's code, your verdicts, and an AI-use log. Put both in a public repo.
+Two rendered reports from `ps3_check_template.qmd` (one for Part A, one for Part B), each
+including the agent's code, your verdicts, and the AI documentation section. Put both in a public GitHub repo and publish the rendered HTML with GitHub Pages, as you did in Problem Set 1; submit the two Pages URLs.
 
-## Grading (10 points)
+## Grading (15 points)
 
 | | Points |
 |---|---|
-| Part A: verdict table complete and accurate against the known outcome | 3 |
-| Part B: target outcomes identified up front; data and materials inventory | 2 |
-| Part B: reproduction attempted for every target outcome with a per-outcome verdict and reasons | 3 |
-| Part B: time accounting, assessment, and AI-use log | 2 |
+| Part A: verdict table complete and accurate against the known outcome | 4 |
+| Part B: target outcomes identified up front; data and materials inventory | 3 |
+| Part B: reproduction attempted for every target outcome with a per-outcome verdict and reasons | 5 |
+| Part B: time accounting, assessment, and AI documentation with transcript | 3 |
 
 Discrepancies are not your fault and cost no points; unexplained discrepancies do. The
 class's Part B verdicts will be aggregated (with agreement between the two checkers per

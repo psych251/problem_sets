@@ -1,0 +1,192 @@
+---
+title: 'Psych 251 PS4: Simulation'
+author: "Cristina Ceballos"
+date: "11/11/2019"
+output: 
+  html_document:
+    toc: true
+---
+
+This is problem set #4, in which we want you to integrate your knowledge of data wrangling with some basic simulation skills. It's a short problem set to help you get your feet wet in testing statistical concepts through "making up data" rather than consulting a textbook or doing math. 
+
+For ease of reading, please separate your answers from our text by marking our text with the `>` character (indicating quotes). 
+
+```{r, warning=F, message=F}
+library(tidyverse)
+```
+
+Let's start by convincing ourselves that t-tests have the appropriate false positive rate. Run 10,000 t-tests with standard, normally-distributed data from a made up 30-person, single-measurement experiment (the command for sampling from a normal distribution is `rnorm`).
+
+The goal of these t-tests are to determine, based on 30 observations, whether the underlying distribution (in this case a normal distribution with mean 0 and standard deviation 1) has a mean that is different from 0. In reality, the mean is not different from 0 (we sampled it using `rnorm`), but sometimes the 30 observations we get in our experiment will suggest that the mean is higher or lower. In this case, we'll get a "significant" result and incorrectly reject the null hypothesis of mean 0.
+
+What's the proportion of "significant" results ($p < .05$) that you see?
+
+First do this using a `for` loop.
+
+```{r}
+
+result <- numeric(10000)
+
+for (i in 1:10000) {
+  X <- rnorm(30, 0, 1)
+  result[i] <- t.test(X)$p.value
+}
+
+sig_results <- result < 0.05
+
+sum(sig_results)/10000
+
+
+```
+
+Next, do this using the `replicate` function:
+
+```{r}
+
+pvals <- replicate(10000, t.test(rnorm(30))$p.value)
+
+sig_pvals <- pvals < 0.05
+
+sum(sig_pvals)/10000
+
+```
+
+How does this compare to the intended false-positive rate of $\alpha=0.05$?
+
+> This answer makes sense. I'm getting a false positive rate of about 5 percent or slightly less than 5 percent. That's what I would expect given that I am testing for signifiance of ($p < .05$). 
+
+Ok, that was a bit boring. Let's try something more interesting - let's implement a p-value sniffing simulation, in the style of Simons, Nelson, & Simonsohn (2011).
+
+Consider this scenario: you have done an experiment, again with 30 participants (one observation each, just for simplicity). The question is whether the true mean is different from 0. You aren't going to check the p-value every trial, but let's say you run 30 - then if the p-value is within the range p < .25 and p > .05, you optionally run 30 more and add those data, then test again. But if the original p value is < .05, you call it a day, and if the original is > .25, you also stop.  
+
+First, write a function that implements this sampling regime.
+
+```{r}
+double.sample <- function () {
+  
+  first_sample <- rnorm(30)
+
+    pvals_2 <- (t.test(first_sample)$p.value)
+
+  if(pvals_2<0.05) {
+      return(pvals_2)
+  } else if (pvals_2>0.25) {
+      return(pvals_2) 
+  } else {
+      second_sample <- c(first_sample, rnorm(30))
+      return(t.test(second_sample)$p.value)
+  }
+
+}
+
+
+```
+
+Now call this function 10k times and find out what happens. 
+
+```{r}
+
+tenk_results <- replicate(10000, double.sample())
+
+sum(tenk_results < 0.05)/10000
+
+
+```
+
+Is there an inflation of false positives? How bad is it?
+
+> Yes, there's an inflation of false positives. I'm getting about 7 percent false positives, using the double sample technique. This is what Mike talked about in class, with p-hacking. While I may falsely believe that I am keeping p-value at less than 0.05, the double sampling technique is instead giving me slightly higher false positives.
+
+Now modify this code so that you can investigate this "double the sample" rule in a bit more depth. In the previous question, the researcher doubles the sample only when they think they got "close" to a significant result, i.e. when their not-significant p is less than 0.25. What if the researcher was more optimistic? See what happens in these 3 other scenarios:
+
+* The researcher doubles the sample whenever their pvalue is not significant, but it's less than 0.5.
+* The researcher doubles the sample whenever their pvalue is not significant, but it's less than 0.75.
+* The research doubles their sample whenever they get ANY pvalue that is not significant.
+
+How do these choices affect the false positive rate?
+
+HINT: Try to do this by making the function `double.sample` take the upper p value as an argument, so that you can pass this through dplyr.
+
+HINT 2: You may need more samples. Find out by looking at how the results change from run to run.
+
+```{r}
+
+# The researcher doubles the sample whenever their pvalue is not significant, but it's less than 0.5.
+
+double.sample0.5 <- function () {
+  
+  first_sample_0.05 <- rnorm(30)
+
+    pvals_2_0.05 <- (t.test(first_sample_0.05)$p.value)
+
+    if(pvals_2_0.05<0.05) {
+      return(pvals_2_0.05)
+  } else if (pvals_2_0.05>0.5) {
+      return(pvals_2_0.05) 
+  } else {
+      second_sample_0.05 <- c(first_sample_0.05, rnorm(30))
+      return(t.test(second_sample_0.05)$p.value)
+  }
+
+}
+
+tenk_results_0.05 <- replicate(10000, double.sample0.5())
+
+sum(tenk_results_0.05 < 0.05)/10000
+
+
+
+# The researcher doubles the sample whenever their pvalue is not significant, but it's less than 0.75.
+
+double.sample0.75 <- function () {
+  
+  first_sample_0.75 <- rnorm(30)
+
+    pvals_2_0.75 <- (t.test(first_sample_0.75)$p.value)
+
+  
+  if(pvals_2_0.75<0.05) {
+      return(pvals_2_0.75)
+  } else if (pvals_2_0.75>0.75) {
+      return(pvals_2_0.75) 
+  } else {
+      second_sample_0.75 <- c(first_sample_0.75, rnorm(30))
+      return(t.test(second_sample_0.75)$p.value)
+  }
+
+}
+
+tenk_results_0.75 <- replicate(10000, double.sample0.75())
+
+sum(tenk_results_0.75 < 0.05)/10000
+
+
+
+# The researcher doubles the sample whenever their pvalue is not significant.
+
+double.sample_whenever <- function () {
+  
+  first_sample_whenever <- rnorm(30)
+    pvals_2_whenever <- (t.test(first_sample_whenever)$p.value)
+
+  if(pvals_2_whenever<0.05) {
+      return(pvals_2_whenever)
+  } else {
+      second_sample_whenever <- c(first_sample_whenever, rnorm(30))
+      return(t.test(second_sample_whenever)$p.value)
+  }
+
+}
+
+tenk_results_whenever <- replicate(10000, double.sample_whenever())
+
+sum(tenk_results_whenever < 0.05)/10000
+
+
+
+
+```
+
+What do you conclude on the basis of this simulation? How bad is this kind of data-dependent policy?
+
+> I see an inflation of false positives. The more liberal I am with my double-sampling policy, the higher the rate of false positives. For example, when I sampled again whenever, regardless of my p value, I got an 8 percent rate of false positives. This data-dependent double-sampling policy is leading to many more false positives, even though my putative p-value is set below 0.5
